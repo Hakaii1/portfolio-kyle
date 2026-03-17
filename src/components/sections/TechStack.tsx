@@ -345,9 +345,69 @@ export default function TechStack() {
       />
       <div className="absolute inset-0 bg-background/40 z-0" />
 
-      <div className="relative h-full flex flex-col pt-24 z-10">
-        <div className="container mx-auto px-4 flex flex-col items-center mb-8">
-          <motion.h2 className="text-6xl md:text-8xl font-display uppercase tracking-tighter text-glow text-center">
+      <div className="relative h-full flex flex-col pt-24 z-10 overscroll-none overflow-hidden">
+        <div className="container mx-auto px-4 flex flex-col items-center mb-12">
+          {/* Tactical Holographic HUD (Integrated into Header) */}
+          <motion.div 
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="w-full max-w-2xl mb-8 group"
+          >
+            <div className="bg-background/20 backdrop-blur-2xl border-x border-white/5 px-6 py-3 rounded-2xl relative overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.3)] border-b border-white/5">
+              <div className="flex justify-between items-center mb-2">
+                <div className="flex items-center gap-3">
+                  <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse shadow-[0_0_8px_#00f0ff]" />
+                  <span className="text-[8px] font-mono text-white/40 uppercase tracking-[0.4em]">Sector_Sync_Protocol</span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <span className="text-[10px] text-accent font-mono uppercase font-bold tracking-widest">
+                    [{blocksHit.length}/{techData.length}] SYNCED
+                  </span>
+                </div>
+              </div>
+
+              {/* Main Progress Band */}
+              <div className="relative h-10 flex items-center px-2">
+                <div className="absolute inset-x-0 h-[1px] bg-white/5 rounded-full" />
+                
+                <motion.div 
+                  animate={{ left: ["-10%", "110%"], opacity: [0, 1, 0] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                  className="absolute w-20 h-[1px] bg-gradient-to-r from-transparent via-accent to-transparent z-10"
+                />
+
+                <motion.div style={{ left: mapMarkerLeft }} className="absolute z-20 top-1/2 -translate-y-1/2 -translate-x-1/2 w-0.5 h-5 bg-accent/80 shadow-[0_0_15px_#00f0ff]" />
+
+                {techData.map((t) => {
+                  const isSynced = blocksHit.includes(t.name);
+                  return (
+                    <div key={t.name} className="absolute" style={{ left: `${(t.x / LEVEL_WIDTH) * 100}%` }}>
+                      <AnimatePresence mode="wait">
+                        {isSynced ? (
+                          <motion.div
+                            initial={{ scale: 0, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            className="relative p-1 rounded-md bg-background/60 border border-white/10"
+                            style={{ color: t.color }}
+                          >
+                            <div className="scale-[0.6] origin-center">{t.icon}</div>
+                          </motion.div>
+                        ) : (
+                          <div className="w-0.5 h-0.5 rounded-full bg-white/20" />
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Glowing Corner Accents */}
+              <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-accent/20 rounded-tl-xl" />
+              <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-accent/20 rounded-br-xl" />
+            </div>
+          </motion.div>
+
+          <motion.h2 className="text-4xl md:text-8xl font-display uppercase tracking-tighter text-glow text-center">
             Tech<span className="text-accent">Stacks</span>
           </motion.h2>
           <div className="flex gap-4 mt-2">
@@ -362,13 +422,13 @@ export default function TechStack() {
 
         {/* Tech Archive / Achievement Hub */}
         <div
-          className="absolute left-6 top-32 z-50 w-64"
+          className="absolute left-4 lg:left-6 top-32 z-50 w-48 lg:w-64"
           onWheel={(e) => e.stopPropagation()}
         >
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="p-4 bg-background/80 backdrop-blur-2xl border-2 border-white/5 rounded-2xl shadow-[20px_0_50px_rgba(0,0,0,0.5)] overscroll-contain"
+            className="p-3 lg:p-4 bg-background/80 backdrop-blur-2xl border-2 border-white/5 rounded-2xl shadow-[20px_0_50px_rgba(0,0,0,0.5)] overscroll-contain"
           >
             <div className="flex flex-col gap-1 mb-4 border-b border-white/10 pb-3">
               <div className="flex justify-between items-center">
@@ -387,7 +447,7 @@ export default function TechStack() {
               </div>
             </div>
 
-            <div className="flex flex-col gap-2 max-h-[40vh] overflow-y-auto pr-2 custom-scrollbar">
+            <div className="flex flex-col gap-2 max-h-[30vh] lg:max-h-[40vh] overflow-y-auto pr-2 custom-scrollbar">
               <AnimatePresence initial={false}>
                 {techData.filter(t => blocksHit.includes(t.name)).map((tech) => (
                   <motion.div
@@ -576,89 +636,47 @@ export default function TechStack() {
             </motion.div>
           </motion.div>
         </div>
+      </div>
 
-        {/* Arcade Mobile Controls */}
-        <div className="absolute inset-x-0 bottom-12 flex md:hidden justify-between px-6 pointer-events-none z-[150]">
-          {/* D-Pad */}
-          <div className="flex gap-4 pointer-events-auto items-end">
-            <button
-              onPointerDown={() => {
-                keysPressed.current.add("touch-left");
-                setFacing("left");
-              }}
-              onPointerUp={() => keysPressed.current.delete("touch-left")}
-              onPointerLeave={() => keysPressed.current.delete("touch-left")}
-              className="w-16 h-16 bg-background/60 backdrop-blur-md rounded-2xl border-2 border-white/20 flex items-center justify-center active:bg-accent active:border-accent group transition-all"
-            >
-              <div className="w-0 h-0 border-t-[10px] border-t-transparent border-b-[10px] border-b-transparent border-r-[20px] border-r-white group-active:border-r-background" />
-            </button>
-            <button
-              onPointerDown={() => {
-                keysPressed.current.add("touch-right");
-                setFacing("right");
-              }}
-              onPointerUp={() => keysPressed.current.delete("touch-right")}
-              onPointerLeave={() => keysPressed.current.delete("touch-right")}
-              className="w-16 h-16 bg-background/60 backdrop-blur-md rounded-2xl border-2 border-white/20 flex items-center justify-center active:bg-accent active:border-accent group transition-all"
-            >
-              <div className="w-0 h-0 border-t-[10px] border-t-transparent border-b-[10px] border-b-transparent border-l-[20px] border-l-white group-active:border-l-background" />
-            </button>
-          </div>
-
-          {/* Jump Button */}
-          <div className="pointer-events-auto flex items-end">
-            <button
-              onPointerDown={() => keysPressed.current.add("touch-jump")}
-              onPointerUp={() => keysPressed.current.delete("touch-jump")}
-              onPointerLeave={() => keysPressed.current.delete("touch-jump")}
-              className="w-20 h-20 bg-accent/30 backdrop-blur-md rounded-full border-4 border-accent flex flex-col items-center justify-center active:bg-accent active:scale-95 group transition-all shadow-[0_0_30px_rgba(0,240,255,0.3)]"
-            >
-              <span className="text-[10px] font-mono text-accent uppercase font-bold group-active:text-background">Jump</span>
-              <div className="w-6 h-6 border-2 border-white/60 rounded-full mt-1 group-active:border-background" />
-            </button>
-          </div>
+      {/* Arcade Mobile Controls */}
+      <div className="absolute inset-x-0 bottom-24 flex justify-between px-6 pointer-events-none z-[150]">
+        {/* D-Pad */}
+        <div className="flex gap-4 pointer-events-auto items-end">
+          <button
+            onPointerDown={() => {
+              keysPressed.current.add("touch-left");
+              setFacing("left");
+            }}
+            onPointerUp={() => keysPressed.current.delete("touch-left")}
+            onPointerLeave={() => keysPressed.current.delete("touch-left")}
+            className="w-16 h-16 bg-background/60 backdrop-blur-md rounded-2xl border-2 border-white/20 flex items-center justify-center active:bg-accent active:border-accent group transition-all"
+          >
+            <div className="w-0 h-0 border-t-[10px] border-t-transparent border-b-[10px] border-b-transparent border-r-[20px] border-r-white group-active:border-r-background" />
+          </button>
+          <button
+            onPointerDown={() => {
+              keysPressed.current.add("touch-right");
+              setFacing("right");
+            }}
+            onPointerUp={() => keysPressed.current.delete("touch-right")}
+            onPointerLeave={() => keysPressed.current.delete("touch-right")}
+            className="w-16 h-16 bg-background/60 backdrop-blur-md rounded-2xl border-2 border-white/20 flex items-center justify-center active:bg-accent active:border-accent group transition-all"
+          >
+            <div className="w-0 h-0 border-t-[10px] border-t-transparent border-b-[10px] border-b-transparent border-l-[20px] border-l-white group-active:border-l-background" />
+          </button>
         </div>
 
-        {/* Mini-Map only */}
-        <div className="absolute bottom-10 right-10 z-[100]">
-          <div className="w-64 h-20 border border-white/10 bg-background/40 backdrop-blur-md relative overflow-hidden p-3 rounded-xl">
-            <div className="flex justify-between items-center mb-1">
-              <span className="text-[7px] opacity-30 font-mono tracking-widest">MINI_MAP_SCNR</span>
-              <span className="text-[7px] text-accent font-mono uppercase">Sync: {blocksHit.length}/11</span>
-            </div>
-            <div className="absolute bottom-6 left-4 right-4 h-[1px] bg-white/5">
-              <motion.div
-                style={{ left: mapMarkerLeft }}
-                className="absolute top-[-2px] w-1.5 h-4 border-x border-accent"
-              />
-              {techData.map(t => (
-                <div
-                  key={t.name}
-                  className="absolute group"
-                  style={{ left: `${(t.x / LEVEL_WIDTH) * 100}%`, top: "-8px" }}
-                >
-                  <AnimatePresence mode="wait">
-                    {blocksHit.includes(t.name) ? (
-                      <motion.div
-                        key="icon"
-                        initial={{ opacity: 0, scale: 0, y: 5 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        style={{ color: t.color }}
-                        className="scale-[0.6] origin-bottom drop-shadow-[0_0_5px_rgba(255,255,255,0.2)]"
-                      >
-                        {t.icon}
-                      </motion.div>
-                    ) : (
-                      <motion.div
-                        key="bar"
-                        className="w-[2px] h-3 bg-white/10 translate-y-2"
-                      />
-                    )}
-                  </AnimatePresence>
-                </div>
-              ))}
-            </div>
-          </div>
+        {/* Jump Button */}
+        <div className="pointer-events-auto flex items-end">
+          <button
+            onPointerDown={() => keysPressed.current.add("touch-jump")}
+            onPointerUp={() => keysPressed.current.delete("touch-jump")}
+            onPointerLeave={() => keysPressed.current.delete("touch-jump")}
+            className="w-20 h-20 bg-accent/30 backdrop-blur-md rounded-full border-4 border-accent flex flex-col items-center justify-center active:bg-accent active:scale-95 group transition-all shadow-[0_0_30px_rgba(0,240,255,0.3)]"
+          >
+            <span className="text-[10px] font-mono text-accent uppercase font-bold group-active:text-background">Jump</span>
+            <div className="w-6 h-6 border-2 border-white/60 rounded-full mt-1 group-active:border-background" />
+          </button>
         </div>
       </div>
     </section>
