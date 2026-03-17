@@ -101,7 +101,7 @@ export default function Hero() {
               {/* Image Container */}
               <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-background shadow-[0_0_30px_rgba(0,240,255,0.2)]">
                 <img 
-                  src="/assets/Images/1x1.png" 
+                  src="/assets/1x1.png" 
                   alt="Kyle Gulapa" 
                   className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 scale-110 group-hover:scale-100"
                 />
