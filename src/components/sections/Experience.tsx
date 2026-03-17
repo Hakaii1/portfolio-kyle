@@ -15,7 +15,7 @@ const experiences = [
     period: "2025 - Present",
     description: "Contributing to full-stack development, website maintenance, and user interface improvements. Engineering solutions using vanilla PHP and MS SQL.",
     tech: ["PHP", "HTML", "CSS", "MS SQL", "JavaScript"],
-    image: "/assets/images/lrn.jpg"
+    image: "/assets/Images/lrn.jpg"
   },
   {
     role: "BS Computer Science",
@@ -23,7 +23,7 @@ const experiences = [
     period: "2022 - Present",
     description: "Pursuing a degree with a core focus on software development, algorithms, and complex system design.",
     tech: ["Algorithms", "Software Dev", "System Design"],
-    image: "/assets/images/hau.jpg"
+    image: "/assets/Images/hau.jpg"
   }
 ];
 
