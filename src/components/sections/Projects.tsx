@@ -75,7 +75,7 @@ const projects = [
     external: "https://chromewebstore.google.com/detail/facebook-phishing-detecto/gijaklfaegcklbdgikikgocmedcohmdl",
     type: "Security Tool // Personal",
     description: "Browser extension using pattern recognition to detect and neutralize phishing threats on social media in real-time.",
-    image: "/assets/projects/Extension.png",
+    image: "/assets/Projects/Extension.png",
     color: "#1877f2"
   },
   {
@@ -95,7 +95,7 @@ const projects = [
     external: "https://drive.google.com/file/d/1LM_QiIAx7sjftbbsuZt3utUyp-ytqUmx/view",
     type: "Mobile App // Personal",
     description: "Interactive language learning application promoting Kapampangan culture through gamified quizzes.",
-    image: "/assets/projects/Sulyap.png",
+    image: "/assets/Projects/Sulyap.png",
     color: "#ff9900"
   },
   {
@@ -104,7 +104,7 @@ const projects = [
     github: "https://github.com/Hakaii1/MP3-Downloader",
     type: "Utility Tool // Personal",
     description: "YouTube/Spotify downloader with extensive metadata tagging and robust backend processing.",
-    image: "/assets/projects/mp3-downloader.png",
+    image: "/assets/Projects/mp3-downloader.png",
     color: "#1db954"
   },
   {
@@ -113,7 +113,7 @@ const projects = [
     github: "https://github.com/Hakaii1/file-converter",
     type: "Utility Tool // Personal",
     description: "Versatile media conversion tool supporting various audio and video formats using FFmpeg.",
-    image: "/assets/projects/image-converter.png",
+    image: "/assets/Projects/image-converter.png",
     color: "#9933ff"
   }
 ];
