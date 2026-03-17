@@ -32,6 +32,14 @@ const FALLING_FRAMES = [
   "/assets/game/falling-2.png",
   "/assets/game/falling-3.png"
 ];
+const CROUCH_FRAMES = [
+  "/assets/game/crouch-1.png",
+  "/assets/game/crouch-2.png",
+];
+const FIRE_FRAMES = [
+  "/assets/game/fire-1.png",
+  "/assets/game/fire-2.png", // This might be used as the fireball too based on user description
+];
 
 export default function Footer() {
   const { scrollYProgress } = useScroll();
@@ -42,9 +50,15 @@ export default function Footer() {
   const [frame, setFrame] = React.useState(0);
   const [isFalling, setIsFalling] = React.useState(true);
   const [isJumpingBack, setIsJumpingBack] = React.useState(false);
+  const [isCrouching, setIsCrouching] = React.useState(false);
+  const [isFiring, setIsFiring] = React.useState(false);
+  const [fireball, setFireball] = React.useState<{ x: number; y: number; visible: boolean; rotation: number; flip: boolean } | null>(null);
+  const resumeButtonRef = React.useRef<HTMLButtonElement>(null);
 
   const marioX = useMotionValue(100);
   const marioFacing = useMotionValue(1);
+  const fireballRotation = useMotionValue(0);
+  const fireballTransform = useTransform(fireballRotation, r => `translate(-50%, -50%) rotate(${r}deg)`);
   const lenis = useLenis();
 
   // High performance physics for Mario walking in footer
@@ -128,6 +142,78 @@ export default function Footer() {
     setTimeout(() => setIsCopied(false), 2000);
   };
 
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key.toLowerCase() === "s") {
+        setIsCrouching(true);
+      }
+    };
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (e.key.toLowerCase() === "s") {
+        setIsCrouching(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+    };
+  }, []);
+
+  const handleFireResume = () => {
+    if (isFiring || !resumeButtonRef.current) {
+        setIsResumeOpen(true);
+        return;
+    };
+    
+    setIsFiring(true);
+    
+    // Get button position
+    const rect = resumeButtonRef.current.getBoundingClientRect();
+    const targetX = rect.left + rect.width / 2;
+    const targetY = rect.top + rect.height / 2;
+
+    // Mario's position (approximate from his x motion value and bottom offset)
+    const marioStartX = marioX.get() + 60; // Center of Mario (120px width)
+    const marioStartY = window.innerHeight - 80; // Mario is at bottom-6 (approx)
+
+    // Calculate angle to target and add 180 degree offset if the sprite's 'head' is on the left
+    const angle = Math.atan2(targetY - marioStartY, targetX - marioStartX) * (180 / Math.PI) + 180;
+
+    fireballRotation.set(angle);
+    setFireball({ x: marioStartX, y: marioStartY, visible: true, rotation: angle, flip: false });
+
+    // Animate fireball
+    const animationDuration = 600;
+    const startTime = performance.now();
+
+    const animateFireball = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / animationDuration, 1);
+
+      // Ease in quad
+      const easeProgress = progress * progress;
+
+      const currentX = marioStartX + (targetX - marioStartX) * easeProgress;
+      const currentY = marioStartY + (targetY - marioStartY) * easeProgress;
+      const currentRotation = angle + (progress * 1440); // Base angle + 4 full spins
+      
+      fireballRotation.set(currentRotation);
+      setFireball({ x: currentX, y: currentY, visible: true, rotation: currentRotation, flip: false });
+
+      if (progress < 1) {
+        requestAnimationFrame(animateFireball);
+      } else {
+        setFireball(null);
+        setIsFiring(false);
+        setIsResumeOpen(true);
+      }
+    };
+
+    requestAnimationFrame(animateFireball);
+  };
+
   return (
     <footer ref={footerRef} id="contact" className="relative h-screen flex flex-col items-center justify-center bg-transparent px-4 overflow-hidden">
       <div className="absolute inset-0 bg-grid opacity-20 pointer-events-none" />
@@ -175,9 +261,10 @@ export default function Footer() {
         <div className="flex flex-col gap-16 items-center justify-center">
           <div className="flex flex-col md:flex-row gap-6">
             <motion.button
+              ref={resumeButtonRef}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => setIsResumeOpen(true)}
+              onClick={handleFireResume}
               className="group relative px-12 py-5 bg-foreground text-background border-2 border-foreground font-display text-2xl uppercase tracking-widest hover:bg-transparent hover:text-foreground transition-all shadow-[0_0_30px_rgba(255,255,255,0.1)]"
             >
               <span className="relative z-10">VIEW_RESUME.exe</span>
@@ -339,7 +426,13 @@ export default function Footer() {
           style={{ x: marioX, scaleX: marioFacing }}
         >
           <img
-            src={isJumpingBack ? JUMP_FRAMES[0] : (!isFooterInView || isFalling) ? FALLING_FRAMES[frame % 3] : WALK_FRAMES[frame]}
+            src={
+              isJumpingBack ? JUMP_FRAMES[0] : 
+              (!isFooterInView || isFalling) ? FALLING_FRAMES[frame % 3] : 
+              isFiring ? FIRE_FRAMES[0] :
+              isCrouching ? CROUCH_FRAMES[0] :
+              WALK_FRAMES[frame]
+            }
             className="pixelated block"
             alt="Mario"
             style={{
@@ -351,6 +444,33 @@ export default function Footer() {
             }}
           />
         </motion.div>
+
+        {/* Fireball overlay */}
+        <AnimatePresence>
+          {fireball && fireball.visible && (
+            <motion.div
+              initial={{ scale: 0.5, opacity: 0 }}
+              animate={{ scale: 1.2, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              style={{
+                position: 'fixed',
+                left: fireball.x,
+                top: fireball.y,
+                width: '80px',
+                height: '80px',
+                zIndex: 300,
+                pointerEvents: 'none',
+                transform: fireballTransform
+              }}
+            >
+              <img 
+                src={FIRE_FRAMES[1]} 
+                alt="Fireball" 
+                className="w-full h-full pixelated"
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Back to Game Arrow */}
         <div className="absolute right-10 -top-12 flex flex-col items-center gap-2 group z-50 pointer-events-auto">

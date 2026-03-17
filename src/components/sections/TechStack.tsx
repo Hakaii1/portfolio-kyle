@@ -34,6 +34,10 @@ const FALLING_FRAMES = [
   "/assets/game/falling-2.png",
   "/assets/game/falling-3.png"
 ];
+const CROUCH_FRAMES = [
+  "/assets/game/crouch-1.png",
+  "/assets/game/crouch-2.png",
+];
 const BACKGROUND_ASSET = "/assets/game/background.png";
 const PIPE_FRAMES = [
   "/assets/game/pipe-1.png",
@@ -51,6 +55,10 @@ const BLOCK_HIT = [
   "/assets/game/block-5.png",
   "/assets/game/block-6.png",
   "/assets/game/block-7.png",
+];
+const FIRE_FRAMES = [
+  "/assets/game/fire-1.png",
+  "/assets/game/fire-2.png",
 ];
 
 // Preload images to prevent flickering
@@ -110,6 +118,9 @@ export default function TechStack() {
   const [facing, setFacing] = useState<"left" | "right">("right");
   const [isJumping, setIsJumping] = useState(false);
   const [isWalking, setIsWalking] = useState(false);
+  const [isCrouching, setIsCrouching] = useState(false);
+  const [isFiring, setIsFiring] = useState(false);
+  const [fireballs, setFireballs] = useState<{ id: number; x: number; y: number; vx: number }[]>([]);
   const [frame, setFrame] = useState(0);
   const [activeTech, setActiveTech] = useState<{ tech: typeof techData[0], id: number } | null>(null);
   const [blocksHit, setBlocksHit] = useState<string[]>([]);
@@ -153,6 +164,21 @@ export default function TechStack() {
     };
   }, []);
 
+  const handleFire = useCallback(() => {
+    setIsFiring(true);
+    const p = physicsRef.current;
+    const direction = facing === "right" ? 1 : -1;
+    
+    setFireballs(prev => [...prev, {
+      id: Date.now(),
+      x: p.x + (direction === 1 ? 95 : 0),
+      y: p.y + 0,
+      vx: direction * 15
+    }]);
+
+    setTimeout(() => setIsFiring(false), 300);
+  }, [facing]);
+
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     const key = e.key.toLowerCase();
     keysPressed.current.add(key);
@@ -160,10 +186,14 @@ export default function TechStack() {
     // Directional facing updates immediately for visuals
     if (key === "arrowleft" || key === "a") setFacing("left");
     if (key === "arrowright" || key === "d") setFacing("right");
-  }, []);
+    if (key === "s" || key === "arrowdown") setIsCrouching(true);
+    if (key === "f" || key === "control") handleFire();
+  }, [facing]);
 
   const handleKeyUp = useCallback((e: KeyboardEvent) => {
-    keysPressed.current.delete(e.key.toLowerCase());
+    const key = e.key.toLowerCase();
+    keysPressed.current.delete(key);
+    if (key === "s" || key === "arrowdown") setIsCrouching(false);
   }, []);
 
   const update = useCallback((time: number) => {
@@ -183,6 +213,10 @@ export default function TechStack() {
     let targetVx = 0;
     if (keys.has("a") || keys.has("arrowleft") || keys.has("touch-left")) targetVx = -MOVE_SPEED;
     if (keys.has("d") || keys.has("arrowright") || keys.has("touch-right")) targetVx = MOVE_SPEED;
+    
+    // Disable horizontal movement when crouching on ground
+    if (isCrouching && p.y <= 0) targetVx = 0;
+    
     p.vx = targetVx;
 
     // Jump Logic (Instant response)
@@ -271,8 +305,19 @@ export default function TechStack() {
     motionY.set(p.y);
     motionCameraX.set(p.cameraX);
 
+    // Move fireballs
+    setFireballs(prev => {
+      const nextFireballs = prev
+        .map(f => ({ ...f, x: f.x + f.vx * dt }))
+        .filter(f => {
+          const screenX = f.x - p.cameraX;
+          return screenX > -300 && screenX < window.innerWidth + 300;
+        });
+      return nextFireballs;
+    });
+
     requestRef.current = requestAnimationFrame(update);
-  }, [motionX, motionY, motionCameraX]);
+  }, [motionX, motionY, motionCameraX, isCrouching]);
 
   useEffect(() => {
     if (activeTech) {
@@ -621,7 +666,13 @@ export default function TechStack() {
               </AnimatePresence>
 
               <img
-                src={isJumping ? (physicsRef.current.vy < 0 ? FALLING_FRAMES[2] : JUMP_FRAMES[physicsRef.current.vy < 10 ? 1 : 0]) : isWalking ? WALK_FRAMES[frame % 8] : IDLE_FRAMES[Math.floor(frame / 2) % 4]}
+                src={
+                  isJumping ? (physicsRef.current.vy < 0 ? FALLING_FRAMES[2] : JUMP_FRAMES[physicsRef.current.vy < 10 ? 1 : 0]) : 
+                  isFiring ? FIRE_FRAMES[0] :
+                  isCrouching ? CROUCH_FRAMES[0] :
+                  isWalking ? WALK_FRAMES[frame % 8] : 
+                  IDLE_FRAMES[Math.floor(frame / 2) % 4]
+                }
                 alt="Mario"
                 className="pixelated block"
                 style={{
@@ -634,6 +685,22 @@ export default function TechStack() {
                 }}
               />
             </motion.div>
+
+            {/* TechStack Fireballs */}
+            {fireballs.map(f => (
+              <motion.div
+                key={f.id}
+                className="absolute w-24 h-24 z-[54]"
+                style={{ left: f.x, bottom: f.y + 45 }}
+              >
+                <img 
+                  src={FIRE_FRAMES[1]} 
+                  className="w-full h-full pixelated"
+                  style={{ transform: `scaleX(${f.vx > 0 ? 1 : -1})` }}
+                  alt="Fireball"
+                />
+              </motion.div>
+            ))}
           </motion.div>
         </div>
       </div>
@@ -667,7 +734,14 @@ export default function TechStack() {
         </div>
 
         {/* Jump Button */}
-        <div className="pointer-events-auto flex items-end">
+        <div className="pointer-events-auto flex items-end gap-4">
+          <button
+            onPointerDown={handleFire}
+            className="w-20 h-20 bg-orange-500/30 backdrop-blur-md rounded-full border-4 border-orange-500 flex flex-col items-center justify-center active:bg-orange-500 active:scale-95 group transition-all shadow-[0_0_30px_rgba(255,69,0,0.3)]"
+          >
+            <span className="text-[10px] font-mono text-white uppercase font-bold">Fire</span>
+            <div className="w-6 h-6 border-2 border-white/60 rounded-full mt-1 group-active:border-background bg-orange-500" />
+          </button>
           <button
             onPointerDown={() => keysPressed.current.add("touch-jump")}
             onPointerUp={() => keysPressed.current.delete("touch-jump")}
