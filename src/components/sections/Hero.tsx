@@ -97,12 +97,12 @@ export default function Hero() {
                 transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
                 className="absolute -inset-2 border border-accent/50 rounded-full border-t-transparent border-b-transparent"
               />
-              
+
               {/* Image Container */}
               <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-background shadow-[0_0_30px_rgba(0,240,255,0.2)]">
-                <img 
-                  src="/assets/1x1.png" 
-                  alt="Kyle Gulapa" 
+                <img
+                  src="/assets/1x1.jpeg"
+                  alt="Kyle Gulapa"
                   className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 scale-110 group-hover:scale-100"
                 />
                 <div className="absolute inset-0 bg-accent/10 group-hover:bg-transparent transition-colors" />
