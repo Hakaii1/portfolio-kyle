@@ -74,17 +74,94 @@ const ALL_ASSETS = [
 ];
 
 const techData = [
-  { name: "HTML", icon: <Code2 />, desc: "Blueprint of the web. Semantic structure for modern applications.", color: "#e34c26", x: 600 },
-  { name: "CSS", icon: <Layout />, desc: "The artistry of layout. Crafting responsive & dynamic interfaces.", color: "#264de4", x: 1000 },
-  { name: "JavaScript", icon: <Zap />, desc: "The engine of interaction. Bringing pages to life with logic.", color: "#f7df1e", x: 1400 },
-  { name: "React", icon: <Cpu />, desc: "Component architecture. Building scalable high-performance UIs.", color: "#61dafb", x: 1800 },
-  { name: "PHP", icon: <Database />, desc: "Backend heavy-lifter. Powering robust server-side workflows.", color: "#777bb4", x: 2200 },
-  { name: "Python", icon: <Code2 />, desc: "Versatile intelligence. Scripting, data, and ML automation.", color: "#3776ab", x: 2600 },
-  { name: "Java", icon: <Cpu />, desc: "Enterprise backbone. Scalable multi-threaded architectures.", color: "#007396", x: 3000 },
-  { name: "MS SQL", icon: <Database />, desc: "Data foundation. Organizing complex relational ecosystems.", color: "#cc2927", x: 3400 },
-  { name: "Flutter", icon: <Smartphone />, desc: "Cross-platform fluidity. Cinematic mobile experiences.", color: "#02569b", x: 3800 },
-  { name: "Dart", icon: <Code2 />, desc: "Optimized for speed. Powering the Flutter UI framework.", color: "#0175c2", x: 4200 },
-  { name: "Next.js", icon: <Zap />, desc: "The React Framework. Optimized for production and SEO.", color: "#ffffff", x: 4600 }
+  { 
+    name: "HTML", 
+    icon: <Code2 />, 
+    desc: "Blueprint of the web. Semantic structure for modern applications.", 
+    details: "The standard markup language used to create and structure websites. Think of it as the skeletal blueprint or scaffolding of a web page, defining where text, images, buttons, and links are positioned.",
+    color: "#e34c26", 
+    x: 600 
+  },
+  { 
+    name: "CSS", 
+    icon: <Layout />, 
+    desc: "The artistry of layout. Crafting responsive & dynamic interfaces.", 
+    details: "The design stylesheet of the web. It controls how a website looks—defining the layout, color schemes, modern spacing, fonts, animations, and visual presentation across mobile, tablet, and desktop screens.",
+    color: "#264de4", 
+    x: 1000 
+  },
+  { 
+    name: "JavaScript", 
+    icon: <Zap />, 
+    desc: "The engine of interaction. Bringing pages to life with logic.", 
+    details: "The programming language that makes web pages interactive and alive. It handles the dynamic features of a website, such as animations, interactive forms, calculators, search boxes, and instant page updates.",
+    color: "#f7df1e", 
+    x: 1400 
+  },
+  { 
+    name: "React", 
+    icon: <Cpu />, 
+    desc: "Component architecture. Building scalable high-performance UIs.", 
+    details: "A widely-used tool for building user interfaces out of reusable building blocks. It allows websites to load and update information instantly on the screen without needing to reload the entire web page.",
+    color: "#61dafb", 
+    x: 1800 
+  },
+  { 
+    name: "PHP", 
+    icon: <Database />, 
+    desc: "Backend heavy-lifter. Powering robust server-side workflows.", 
+    details: "A server-side programming language used to handle the behind-the-scenes logic of websites. It communicates with the database to run features like user registration, accounts, logins, and online checkouts.",
+    color: "#777bb4", 
+    x: 2200 
+  },
+  { 
+    name: "Python", 
+    icon: <Code2 />, 
+    desc: "Versatile intelligence. Scripting, data, and ML automation.", 
+    details: "A clean and easy-to-read programming language. It is highly popular for data science, artificial intelligence, automation scripts, and server-side web application logic.",
+    color: "#3776ab", 
+    x: 2600 
+  },
+  { 
+    name: "Java", 
+    icon: <Cpu />, 
+    desc: "Enterprise backbone. Scalable multi-threaded architectures.", 
+    details: "A highly secure and reliable programming language used to build large-scale systems. It is the enterprise standard for banking software, database connections, and Android mobile applications.",
+    color: "#007396", 
+    x: 3000 
+  },
+  { 
+    name: "MS SQL", 
+    icon: <Database />, 
+    desc: "Data foundation. Organizing complex relational ecosystems.", 
+    details: "A database management system built by Microsoft. It acts as an organized digital filing cabinet that securely stores, searches, and organizes large amounts of company information for apps to access.",
+    color: "#cc2927", 
+    x: 3400 
+  },
+  { 
+    name: "Flutter", 
+    icon: <Smartphone />, 
+    desc: "Cross-platform fluidity. Cinematic mobile experiences.", 
+    details: "An app development kit created by Google. It allows developers to build beautiful, fast mobile applications for both Apple iOS and Google Android using a single shared codebase.",
+    color: "#02569b", 
+    x: 3800 
+  },
+  { 
+    name: "Dart", 
+    icon: <Code2 />, 
+    desc: "Optimized for speed. Powering the Flutter UI framework.", 
+    details: "The programming language created by Google that powers Flutter. It is designed to run apps fast, ensuring very smooth animations, quick response times, and a fluid mobile user experience.",
+    color: "#0175c2", 
+    x: 4200 
+  },
+  { 
+    name: "Next.js", 
+    icon: <Zap />, 
+    desc: "The React Framework. Optimized for production and SEO.", 
+    details: "An advanced framework built on top of React that speeds up websites and optimizes them for Google searches. It pre-renders pages on the server so that websites load instantly for users.",
+    color: "#ffffff", 
+    x: 4600 
+  }
 ];
 
 export default function TechStack() {
@@ -124,6 +201,8 @@ export default function TechStack() {
   const [frame, setFrame] = useState(0);
   const [activeTech, setActiveTech] = useState<{ tech: typeof techData[0], id: number } | null>(null);
   const [blocksHit, setBlocksHit] = useState<string[]>([]);
+  const [hasMoved, setHasMoved] = useState(false);
+  const [selectedTech, setSelectedTech] = useState<typeof techData[0] | null>(null);
   const gameRef = useRef<HTMLDivElement>(null);
   const requestRef = useRef<number>(0);
   const [isMarioVisible, setIsMarioVisible] = useState(true);
@@ -166,6 +245,7 @@ export default function TechStack() {
 
   const handleFire = useCallback(() => {
     setIsFiring(true);
+    setHasMoved(true);
     const p = physicsRef.current;
     const direction = facing === "right" ? 1 : -1;
     
@@ -182,6 +262,9 @@ export default function TechStack() {
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     const key = e.key.toLowerCase();
     keysPressed.current.add(key);
+    
+    // Track player input to hide starting tutorials
+    setHasMoved(true);
 
     // Directional facing updates immediately for visuals
     if (key === "arrowleft" || key === "a") setFacing("left");
@@ -426,21 +509,21 @@ export default function TechStack() {
                 {techData.map((t) => {
                   const isSynced = blocksHit.includes(t.name);
                   return (
-                    <div key={t.name} className="absolute" style={{ left: `${(t.x / LEVEL_WIDTH) * 100}%` }}>
-                      <AnimatePresence mode="wait">
-                        {isSynced ? (
-                          <motion.div
-                            initial={{ scale: 0, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            className="relative p-1 rounded-md bg-background/60 border border-white/10"
-                            style={{ color: t.color }}
-                          >
-                            <div className="scale-[0.6] origin-center">{t.icon}</div>
-                          </motion.div>
-                        ) : (
-                          <div className="w-0.5 h-0.5 rounded-full bg-white/20" />
+                    <div key={t.name} className="absolute -translate-x-1/2 animate-fade-in" style={{ left: `${(t.x / LEVEL_WIDTH) * 100}%` }}>
+                      <button
+                        onClick={() => setSelectedTech(t)}
+                        className="relative p-1 rounded-md bg-background/60 border border-white/10 hover:border-accent/40 hover:scale-110 active:scale-95 transition-all cursor-pointer flex items-center justify-center group"
+                        style={{ color: isSynced ? t.color : "rgba(255,255,255,0.2)" }}
+                      >
+                        <div className="scale-[0.6] origin-center">
+                          {t.icon}
+                        </div>
+                        {!isSynced && (
+                          <div className="absolute -top-1 -right-1 bg-background border border-white/20 rounded-full p-0.5 scale-[0.5] text-white/30 group-hover:text-accent group-hover:border-accent/30 transition-all">
+                            <Lock size={10} />
+                          </div>
                         )}
-                      </AnimatePresence>
+                      </button>
                     </div>
                   );
                 })}
@@ -455,12 +538,25 @@ export default function TechStack() {
           <motion.h2 className="text-4xl md:text-8xl font-display uppercase tracking-tighter text-glow text-center">
             Tech<span className="text-accent">Stacks</span>
           </motion.h2>
-          <div className="flex gap-4 mt-2">
-            <div className="px-6 py-1 bg-accent/10 border border-accent/30 text-accent font-mono text-[9px] uppercase tracking-[0.5em]">
-              HEADBUTT  BLOCKS TO REVEAL
-            </div>
-            <div className="px-6 py-1 bg-accent text-background font-mono text-[9px] uppercase tracking-[0.5em]">
-              MODULES: {blocksHit.length}/11
+          <div className="flex flex-wrap gap-4 mt-4 justify-center items-center">
+            <motion.div 
+              animate={{ 
+                boxShadow: [
+                  "0 0 10px rgba(0, 240, 255, 0.15)",
+                  "0 0 25px rgba(0, 240, 255, 0.4)",
+                  "0 0 10px rgba(0, 240, 255, 0.15)"
+                ]
+              }}
+              transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+              className="px-6 py-1.5 bg-accent/15 border border-accent/40 text-accent font-mono text-[10px] uppercase tracking-[0.3em] flex items-center gap-2.5 rounded-md shadow-[0_0_15px_rgba(0,240,255,0.15)]"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-ping" />
+              <span className="font-bold">
+                {blocksHit.length > 0 ? "Data Sync Active! Keep Exploring" : "Headbutt blocks to reveal"}
+              </span>
+            </motion.div>
+            <div className="px-6 py-1.5 bg-accent text-background font-mono text-[10px] uppercase tracking-[0.3em] rounded-md font-bold">
+              MODULES: {blocksHit.length}/{techData.length}
             </div>
           </div>
         </div>
@@ -536,6 +632,71 @@ export default function TechStack() {
             className="absolute top-0 bottom-0"
             style={{ transform: levelTransform, width: LEVEL_WIDTH }}
           >
+            {/* Controls Tutorial Hologram above Mario's starting spot */}
+            {!hasMoved && blocksHit.length === 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                className="absolute z-[60] w-64 p-4 rounded-2xl bg-background/95 backdrop-blur-xl border border-accent/40 shadow-[0_0_30px_rgba(0,240,255,0.25)] pointer-events-none"
+                style={{
+                  left: 118, // Center over Mario (starts at 200, width 100, center is 250 => 250 - 128 = 122)
+                  bottom: 230,
+                }}
+              >
+                <div className="relative text-center">
+                  <div className="text-[10px] font-mono text-accent uppercase tracking-[0.2em] mb-2 font-bold flex justify-center items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+                    System Boot: Controls
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-2 text-[10px] font-mono text-white/70 mb-3 border-y border-white/10 py-2.5">
+                    <div className="flex flex-col items-center">
+                      <span className="text-accent text-[11px] font-bold bg-white/5 px-2 py-0.5 rounded border border-white/15">A / D</span>
+                      <span className="mt-1 text-[8px] text-white/50 uppercase tracking-wider">Walk Left/Right</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <span className="text-accent text-[11px] font-bold bg-white/5 px-2 py-0.5 rounded border border-white/15">W / Space</span>
+                      <span className="mt-1 text-[8px] text-white/50 uppercase tracking-wider">Jump Up</span>
+                    </div>
+                  </div>
+
+                  <p className="text-[9px] leading-snug font-mono text-white/80 uppercase tracking-wider animate-pulse">
+                    Headbutt blocks to reveal knowledge base
+                  </p>
+                  
+                  {/* Downward pointer caret */}
+                  <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-4 h-4 bg-background/95 border-r border-b border-accent/40 rotate-45" />
+                </div>
+              </motion.div>
+            )}
+
+            {/* Glowing Pointer above the first block */}
+            {blocksHit.length === 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ 
+                  opacity: [0.7, 1, 0.7], 
+                  y: [0, -8, 0],
+                }}
+                transition={{ 
+                  opacity: { repeat: Infinity, duration: 1.5, ease: "easeInOut" },
+                  y: { repeat: Infinity, duration: 1.5, ease: "easeInOut" }
+                }}
+                className="absolute flex flex-col items-center gap-1.5 pointer-events-none"
+                style={{
+                  left: techData[0].x - 40, // Centered over the 80px block
+                  bottom: BLOCK_Y + 95,
+                  width: 160,
+                  zIndex: 30
+                }}
+              >
+                <div className="px-3 py-1.5 rounded-xl bg-accent/20 backdrop-blur-md border border-accent text-accent font-mono text-[10px] font-bold uppercase tracking-wider text-center shadow-[0_0_20px_rgba(0,240,255,0.4)]">
+                  Headbutt here!
+                </div>
+                <div className="w-0 h-0 border-l-4 border-l-transparent border-r-4 border-r-transparent border-t-4 border-t-accent filter drop-shadow-[0_2px_4px_rgba(0,240,255,0.4)]" />
+              </motion.div>
+            )}
+
             {/* Ground Bricks */}
             {[...Array(Math.floor(LEVEL_WIDTH / 85))].map((_, i) => (
               <div
@@ -713,6 +874,7 @@ export default function TechStack() {
             onPointerDown={() => {
               keysPressed.current.add("touch-left");
               setFacing("left");
+              setHasMoved(true);
             }}
             onPointerUp={() => keysPressed.current.delete("touch-left")}
             onPointerLeave={() => keysPressed.current.delete("touch-left")}
@@ -724,6 +886,7 @@ export default function TechStack() {
             onPointerDown={() => {
               keysPressed.current.add("touch-right");
               setFacing("right");
+              setHasMoved(true);
             }}
             onPointerUp={() => keysPressed.current.delete("touch-right")}
             onPointerLeave={() => keysPressed.current.delete("touch-right")}
@@ -743,7 +906,10 @@ export default function TechStack() {
             <div className="w-6 h-6 border-2 border-white/60 rounded-full mt-1 group-active:border-background bg-orange-500" />
           </button>
           <button
-            onPointerDown={() => keysPressed.current.add("touch-jump")}
+            onPointerDown={() => {
+              keysPressed.current.add("touch-jump");
+              setHasMoved(true);
+            }}
             onPointerUp={() => keysPressed.current.delete("touch-jump")}
             onPointerLeave={() => keysPressed.current.delete("touch-jump")}
             className="w-20 h-20 bg-accent/30 backdrop-blur-md rounded-full border-4 border-accent flex flex-col items-center justify-center active:bg-accent active:scale-95 group transition-all shadow-[0_0_30px_rgba(0,240,255,0.3)]"
@@ -753,6 +919,129 @@ export default function TechStack() {
           </button>
         </div>
       </div>
+
+      {/* 3D Holographic Detail Modal */}
+      <AnimatePresence>
+        {selectedTech && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+            className="fixed inset-0 z-[200] flex items-center justify-center px-4 bg-background/60 backdrop-blur-md"
+          >
+            {/* Click outside to close */}
+            <div 
+              className="absolute inset-0 cursor-default" 
+              onClick={() => setSelectedTech(null)} 
+            />
+
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              transition={{ duration: 0.15, ease: "easeOut" }}
+              className="relative w-full max-w-md bg-zinc-950/90 border border-white/10 p-6 rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.8)] backdrop-blur-2xl overflow-hidden border-b border-white/10"
+            >
+              {/* Scanline & Grid Background Effects */}
+              <div className="absolute inset-0 bg-grid opacity-10 pointer-events-none" />
+              <div className="scanline opacity-10 pointer-events-none" />
+
+              {/* Glowing Corner Accents */}
+              <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-accent/30 rounded-tl-3xl" />
+              <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-accent/30 rounded-br-3xl" />
+
+              <div className="flex flex-col items-center text-center relative z-10">
+                {/* Status indicator */}
+                <div className="flex items-center gap-2 mb-4 bg-white/5 px-3 py-1 rounded-full border border-white/5">
+                  <span className={`w-2 h-2 rounded-full ${blocksHit.includes(selectedTech.name) ? "bg-green-500 animate-pulse shadow-[0_0_8px_#10b981]" : "bg-yellow-500 animate-pulse shadow-[0_0_8px_#eab308]"}`} />
+                  <span className="text-[10px] font-mono text-white/60 uppercase tracking-widest font-bold">
+                    {blocksHit.includes(selectedTech.name) ? "Status: Synced" : "Status: Encrypted"}
+                  </span>
+                </div>
+
+                {/* Animated Logo Container */}
+                <motion.div 
+                  animate={{ 
+                    rotateY: 360,
+                    boxShadow: [
+                      `0 0 20px ${selectedTech.color}33`,
+                      `0 0 40px ${selectedTech.color}66`,
+                      `0 0 20px ${selectedTech.color}33`
+                    ]
+                  }}
+                  transition={{ 
+                    rotateY: { repeat: Infinity, duration: 6, ease: "linear" },
+                    boxShadow: { repeat: Infinity, duration: 2, ease: "easeInOut" }
+                  }}
+                  className="w-20 h-20 rounded-2xl bg-zinc-900 border border-white/15 flex items-center justify-center mb-4 text-4xl shadow-inner"
+                  style={{ color: selectedTech.color }}
+                >
+                  {selectedTech.icon}
+                </motion.div>
+
+                {/* Title */}
+                <h3 className="text-3xl font-display uppercase tracking-wider text-glow mb-1" style={{ textShadow: `0 0 20px ${selectedTech.color}88` }}>
+                  {selectedTech.name}
+                </h3>
+                <span className="text-[9px] font-mono text-white/30 uppercase tracking-[0.3em] mb-4">
+                  Sector_Coord: {selectedTech.x}m
+                </span>
+
+                {/* Info Card Body */}
+                <div className="w-full bg-white/5 rounded-2xl p-4 border border-white/5 text-left mb-6">
+                  {blocksHit.includes(selectedTech.name) ? (
+                    <>
+                      <h4 className="text-[10px] font-mono text-accent uppercase tracking-wider mb-1">Module Decrypted Data:</h4>
+                      <p className="text-sm text-white/80 leading-relaxed font-sans mb-3">
+                        {selectedTech.desc}
+                      </p>
+                      <h4 className="text-[10px] font-mono text-accent uppercase tracking-wider mb-1 mt-3">Extended Decrypt Details:</h4>
+                      <p className="text-[12px] text-white/70 leading-relaxed font-mono">
+                        {selectedTech.details}
+                      </p>
+                    </>
+                  ) : (
+                    <div className="flex flex-col items-center py-2 text-center">
+                      <Lock className="text-yellow-500 mb-2" size={24} />
+                      <h4 className="text-xs font-mono text-yellow-500 uppercase tracking-wider mb-1">Data Stream Locked</h4>
+                      <p className="text-[11px] text-white/60 font-mono leading-relaxed max-w-[280px]">
+                        Find this block at coordinate <span className="text-accent font-bold">{selectedTech.x}m</span> in the level and headbutt it to decrypt its sync file.
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Actions */}
+                <div className="flex gap-4 w-full">
+                  <button
+                    onClick={() => setSelectedTech(null)}
+                    className="flex-1 py-2 px-4 rounded-xl bg-white/5 border border-white/10 text-white hover:bg-white/10 hover:border-white/20 active:scale-95 transition-all font-mono text-xs uppercase tracking-wider cursor-pointer font-bold"
+                  >
+                    Close
+                  </button>
+                  {!blocksHit.includes(selectedTech.name) && (
+                    <button
+                      onClick={() => {
+                        const targetX = selectedTech.x - 200; // Place Mario 200px before the block
+                        physicsRef.current.x = Math.max(0, targetX);
+                        physicsRef.current.y = 300; // Drop Mario from the sky for a satisfying entry!
+                        physicsRef.current.vy = 0;
+                        physicsRef.current.vx = 0;
+                        setHasMoved(true);
+                        setSelectedTech(null);
+                      }}
+                      className="flex-1 py-2 px-4 rounded-xl bg-accent text-background font-bold hover:bg-accent/80 active:scale-95 transition-all font-mono text-xs uppercase tracking-wider cursor-pointer"
+                    >
+                      Locate Block
+                    </button>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

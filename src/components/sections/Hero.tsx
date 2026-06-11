@@ -1,203 +1,230 @@
 "use client";
 
-import React from "react";
-import { motion, Variants } from "framer-motion";
+import React, { useState } from "react";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import { Canvas } from "@react-three/fiber";
-import LiquidSphere from "../canvas/LiquidSphere";
+import FloatingRobot from "../canvas/FloatingRobot";
+import { Compass } from "lucide-react";
 
 export default function Hero() {
+  const [isBooted] = useState(true);
+
   const container: Variants = {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.5,
+        staggerChildren: 0.15,
+        delayChildren: 0.2,
       },
     },
   };
 
   const item: Variants = {
-    hidden: { y: 100, opacity: 0, filter: "blur(10px)" },
+    hidden: { y: 40, opacity: 0, filter: "blur(8px)" },
     show: {
       y: 0,
       opacity: 1,
       filter: "blur(0px)",
       transition: {
-        duration: 1.2,
+        duration: 1.0,
         ease: [0.22, 1, 0.36, 1]
       }
     },
   };
 
-  const nameVariants = {
-    hidden: { clipPath: "inset(100% 0 0 0)" },
-    show: {
-      clipPath: "inset(0% 0 0 0)",
-      transition: { duration: 1.5, ease: [0.19, 1, 0.22, 1] as any, delay: 0.8 }
-    }
-  };
-
   return (
     <section className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-transparent">
-      {/* Cinematic Entrance Overlay */}
-      <motion.div
-        initial={{ opacity: 1 }}
-        animate={{ opacity: 0 }}
-        transition={{ duration: 1.5, ease: "easeInOut", delay: 0.2 }}
-        className="fixed inset-0 z-[100] bg-background pointer-events-none flex items-center justify-center"
-      >
-        <motion.div
-          initial={{ width: "0%" }}
-          animate={{ width: "100%" }}
-          transition={{ duration: 1, ease: "easeInOut" }}
-          className="h-[1px] bg-accent"
-        />
-      </motion.div>
+
 
       {/* Grid Background */}
-      <div className="absolute inset-0 bg-grid opacity-50 z-0" />
+      <div className="absolute inset-0 bg-grid opacity-30 z-0" />
 
-      {/* 3D Background */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 0.6, scale: 1 }}
-        transition={{ duration: 2, ease: "easeOut" }}
-        className="absolute inset-0 z-0"
-      >
-        <Canvas camera={{ position: [0, 0, 5], fov: 75 }}>
-          <ambientLight intensity={0.8} />
-          <pointLight position={[10, 10, 10]} intensity={2} color="#00f0ff" />
-          <pointLight position={[-10, -10, -10]} intensity={1} color="#ff00ff" />
-          <LiquidSphere />
+      {/* 2. DYNAMIC 3D HOVERING ROBOT BACKGROUND */}
+      <div className="absolute inset-0 z-0 bg-[#06060c]/40">
+        <Canvas camera={{ position: [0, 0, 3.5], fov: 75 }}>
+          <ambientLight intensity={0.5} />
+          <directionalLight position={[5, 5, 5]} intensity={1.5} color="#00f0ff" />
+          <pointLight position={[-5, 5, -5]} intensity={1.0} color="#ff00ff" />
+          <spotLight position={[0, 5, 2]} angle={0.6} penumbra={1} intensity={2.0} color="#ffffff" />
+          <FloatingRobot isBooted={isBooted} />
         </Canvas>
-      </motion.div>
+      </div>
 
-      <div className="relative z-10 text-center px-4">
-        <motion.div
-          variants={container}
-          initial="hidden"
-          animate="show"
-          className="flex flex-col gap-6 items-center"
-        >
-          {/* Profile Picture / User ID */}
-          <motion.div
-            variants={item}
-            className="relative group"
-          >
-            <div className="relative w-40 h-40 md:w-56 md:h-56">
-              {/* Spinning Decorative Border */}
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                className="absolute -inset-4 border-2 border-dashed border-accent/30 rounded-full"
-              />
-              <motion.div
-                animate={{ rotate: -360 }}
-                transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-                className="absolute -inset-2 border border-accent/50 rounded-full border-t-transparent border-b-transparent"
-              />
-
-              {/* Image Container */}
-              <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-background shadow-[0_0_30px_rgba(0,240,255,0.2)]">
-                <img
-                  src="/assets/1x1.jpeg"
-                  alt="Kyle Gulapa"
-                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 scale-110 group-hover:scale-100"
-                />
-                <div className="absolute inset-0 bg-accent/10 group-hover:bg-transparent transition-colors" />
-              </div>
-
-              {/* Status Indicator */}
-              <div className="absolute bottom-2 right-2 w-6 h-6 bg-background rounded-full flex items-center justify-center border-2 border-accent shadow-lg z-10">
-                <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
-              </div>
-
-              {/* Tag */}
-              <div className="absolute -right-16 top-1/2 -translate-y-1/2 hidden md:block">
-                <div className="px-3 py-1 bg-accent/10 border border-accent/20 backdrop-blur-sm text-[8px] font-mono text-accent uppercase tracking-[0.3em]">
-                  ID: USER_001 <br />
-                  LVL: EXPERT
+      {/* 3. COCKPIT HUD OVERLAYS (Fades in after preloading completes) */}
+      <AnimatePresence>
+        {isBooted && (
+          <>
+            {/* Left Console Panel */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1.2, delay: 0.6, ease: "easeOut" }}
+              className="absolute left-6 top-32 w-44 hidden xl:flex flex-col border-l border-white/5 pl-4 py-4 z-20 font-mono text-[9px] text-white/40"
+            >
+              <div className="flex flex-col gap-6">
+                {/* Rotating compass visual */}
+                <div className="relative w-16 h-16 border border-white/10 rounded-full flex items-center justify-center">
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ repeat: Infinity, duration: 12, ease: "linear" }}
+                    className="absolute inset-2 border border-dashed border-accent/30 rounded-full flex items-center justify-center"
+                  >
+                    <Compass size={12} className="text-accent/50" />
+                  </motion.div>
+                  <div className="w-1 h-3 bg-accent absolute top-1" />
+                  <div className="w-1 h-3 bg-white/20 absolute bottom-1" />
                 </div>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
 
-          <div className="flex flex-col items-center">
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-display uppercase leading-tight tracking-tighter">
-              <div className="flex justify-center gap-4 overflow-hidden">
-                <motion.span
-                  initial={{ y: -150, opacity: 0, filter: "blur(20px)" }}
-                  animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
-                  transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1], delay: 0.6 }}
-                  className="inline-block"
-                >
-                  Kyle
-                </motion.span>
-                <motion.span
-                  initial={{ x: 150, opacity: 0, filter: "blur(20px)" }}
-                  animate={{ x: 0, opacity: 1, filter: "blur(0px)" }}
-                  transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1], delay: 0.8 }}
-                  className="inline-block"
-                >
-                  Eurie
-                </motion.span>
-              </div>
-              <div className="overflow-hidden">
-                <motion.div
-                  initial={{ y: 100, opacity: 0, filter: "blur(20px)" }}
-                  animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
-                  transition={{ duration: 1.8, ease: [0.19, 1, 0.22, 1], delay: 1 }}
-                  className="text-accent text-glow"
-                >
-                  Alvaro Gulapa
-                </motion.div>
-              </div>
-            </h1>
-          </div>
-
-          <div className="overflow-hidden">
-            <motion.p
-              variants={item}
-              className="text-lg md:text-2xl font-sans text-muted-foreground uppercase tracking-[0.2em]"
+      {/* 4. MAIN HERO TYPOGRAPHY & INTERACTIVE CORE */}
+      <div className="relative z-10 text-center px-4">
+        <AnimatePresence>
+          {isBooted && (
+            <motion.div
+              variants={container}
+              initial="hidden"
+              animate="show"
+              className="flex flex-col gap-6 items-center"
             >
-              Full Stack Web Developer
-            </motion.p>
-          </div>
-
-          <motion.div variants={item} className="mt-8 text-center flex justify-center">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => {
-                document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="magnetic-area group px-8 py-3 brutalist-border bg-foreground text-background font-bold uppercase transition-all hover:bg-accent hover:text-foreground relative overflow-hidden"
-            >
-              <span className="relative z-10">Explore Projects</span>
+              {/* Profile Image with dual neon rotating rings */}
               <motion.div
-                initial={{ x: "-100%" }}
-                whileHover={{ x: "100%" }}
-                transition={{ duration: 0.5 }}
-                className="absolute inset-0 bg-accent z-0"
-              />
-            </motion.button>
-          </motion.div>
-        </motion.div>
+                variants={item}
+                className="relative group"
+              >
+                <div className="relative w-40 h-40 md:w-56 md:h-56">
+                  {/* Outer Pulsing Neon cyan dashes */}
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+                    className="absolute -inset-4 border-2 border-dashed border-accent/40 rounded-full shadow-[0_0_15px_rgba(0,240,255,0.1)]"
+                  />
+                  {/* Inner neon magenta border */}
+                  <motion.div
+                    animate={{ rotate: -360 }}
+                    transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
+                    className="absolute -inset-2 border border-accent-secondary/60 rounded-full border-t-transparent border-b-transparent shadow-[0_0_20px_rgba(255,0,255,0.15)]"
+                  />
+
+                  {/* Core Image container */}
+                  <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-background shadow-[0_0_35px_rgba(0,240,255,0.3)] bg-[#0c0c14]">
+                    <img
+                      src="/assets/1x1.jpeg"
+                      alt="Kyle Gulapa"
+                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-110 group-hover:scale-100"
+                    />
+                    <div className="absolute inset-0 bg-accent/10 group-hover:bg-transparent transition-colors duration-500" />
+                  </div>
+
+                  {/* Pulsing online status indicator */}
+                  <div className="absolute bottom-2 right-2 w-6 h-6 bg-[#0c0c14] rounded-full flex items-center justify-center border-2 border-accent shadow-[0_0_10px_rgba(0,240,255,0.5)] z-10">
+                    <div className="w-2.5 h-2.5 bg-accent rounded-full animate-pulse shadow-[0_0_6px_#00f0ff]" />
+                  </div>
+
+                  {/* HUD detail tooltip tag */}
+                  <div className="absolute -right-20 top-1/2 -translate-y-1/2 hidden md:block">
+                    <div className="px-3.5 py-1.5 bg-background/50 border border-white/5 backdrop-blur-md text-[8px] font-mono text-white/50 hover:text-accent hover:border-accent/40 rounded-md transition-colors text-left shadow-lg">
+                      <span className="text-accent font-bold">NODE::</span> Kyle_Eurie <br />
+                      <span className="text-accent font-bold">DEPT::</span> CS_Graduate
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Main Typography Header */}
+              <div className="flex flex-col items-center mt-2">
+                <h1 className="text-5xl md:text-8xl lg:text-9xl font-display uppercase leading-tight tracking-tighter">
+                  <div className="flex justify-center gap-4 overflow-hidden">
+                    <motion.span
+                      initial={{ y: -100, opacity: 0, filter: "blur(15px)" }}
+                      animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+                      transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.4 }}
+                      className="inline-block"
+                    >
+                      Kyle
+                    </motion.span>
+                    <motion.span
+                      initial={{ x: 100, opacity: 0, filter: "blur(15px)" }}
+                      animate={{ x: 0, opacity: 1, filter: "blur(0px)" }}
+                      transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.55 }}
+                      className="inline-block"
+                    >
+                      Eurie
+                    </motion.span>
+                  </div>
+                  <div className="overflow-hidden mt-1 pb-2">
+                    <motion.div
+                      initial={{ y: 100, opacity: 0, filter: "blur(15px)" }}
+                      animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+                      transition={{ duration: 1.5, ease: [0.19, 1, 0.22, 1], delay: 0.7 }}
+                      className="text-accent text-glow font-extrabold uppercase font-display"
+                    >
+                      Alvaro Gulapa
+                    </motion.div>
+                  </div>
+                </h1>
+              </div>
+
+              {/* Sub-header description */}
+              <div className="overflow-hidden -mt-2">
+                <motion.p
+                  variants={item}
+                  className="text-sm md:text-lg lg:text-xl font-mono text-white/50 uppercase tracking-[0.4em]"
+                >
+                  Full Stack Web Developer // Designer
+                </motion.p>
+              </div>
+
+              {/* Call to action button */}
+              <motion.div variants={item} className="mt-6 text-center flex justify-center z-20">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => {
+                    document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="magnetic-area group px-8 py-3.5 border border-accent/40 rounded-xl bg-accent/5 backdrop-blur-md text-accent font-mono text-xs font-bold uppercase tracking-widest cursor-pointer hover:bg-accent hover:text-background hover:border-accent hover:shadow-[0_0_30px_rgba(0,240,255,0.4)] transition-all duration-300 relative overflow-hidden"
+                >
+                  <span className="relative z-10">Initialize Protocol</span>
+                  <motion.div
+                    initial={{ x: "-100%" }}
+                    whileHover={{ x: "100%" }}
+                    transition={{ duration: 0.5 }}
+                    className="absolute inset-0 bg-gradient-to-r from-accent via-accent-secondary to-accent z-0 opacity-20"
+                  />
+                </motion.button>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
-      <div className="absolute bottom-10 left-10 flex flex-col gap-2">
-        <div className="w-1 h-32 bg-border relative overflow-hidden">
-          <motion.div
-            animate={{ y: ["-100%", "100%"] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-            className="absolute top-0 left-0 w-full h-1/2 bg-accent shadow-[0_0_10px_#00f0ff]"
-          />
-        </div>
-        <span className="text-[10px] uppercase tracking-widest text-muted-foreground rotate-90 origin-left translate-y-4">
-          Scroll to Protocol
-        </span>
-      </div>
+      {/* 5. SCROLL PROCESS DETECTOR */}
+      <AnimatePresence>
+        {isBooted && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1.0, delay: 0.9 }}
+            className="absolute bottom-10 left-10 flex flex-col gap-2 z-20"
+          >
+            <div className="w-[2px] h-24 bg-white/5 relative overflow-hidden rounded-full">
+              <motion.div
+                animate={{ y: ["-100%", "100%"] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                className="absolute top-0 left-0 w-full h-1/2 bg-accent shadow-[0_0_10px_#00f0ff] rounded-full"
+              />
+            </div>
+            <span className="text-[8px] font-mono uppercase tracking-[0.3em] text-white/40 rotate-90 origin-left translate-y-6">
+              Scroll to Sync
+            </span>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
