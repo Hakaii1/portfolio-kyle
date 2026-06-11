@@ -12,7 +12,7 @@ const experiences = [
   {
     role: "Full-stack Web Developer Intern",
     company: "La Rose Noire",
-    period: "2025 - Present",
+    period: "2025 - 2026",
     description: "Contributing to full-stack development, website maintenance, and user interface improvements. Engineering solutions using vanilla PHP and MS SQL.",
     tech: ["PHP", "HTML", "CSS", "MS SQL", "JavaScript"],
     image: "/assets/Images/lrn.jpg"
@@ -20,7 +20,7 @@ const experiences = [
   {
     role: "BS Computer Science",
     company: "Holy Angel University",
-    period: "2022 - Present",
+    period: "2022 - 2026",
     description: "Pursuing a degree with a core focus on software development, algorithms, and complex system design.",
     tech: ["Algorithms", "Software Dev", "System Design"],
     image: "/assets/Images/hau.jpg"
