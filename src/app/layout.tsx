@@ -3,6 +3,7 @@ import "./globals.css";
 import { SmoothScroll } from "@/components/shared/SmoothScroll";
 import NeuralBackground from "@/components/shared/NeuralBackground";
 import Navbar from "@/components/layout/Navbar";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -36,6 +37,7 @@ export default function RootLayout({
           <Navbar />
           {children}
         </SmoothScroll>
+        <SpeedInsights />
       </body>
     </html>
   );
