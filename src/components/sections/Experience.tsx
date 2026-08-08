@@ -185,18 +185,6 @@ export default function Experience() {
           <div className="flex-shrink-0 w-[50vw]" />
         </div>
       </div>
-
-      {/* Section Footer UI */}
-      <div className="absolute bottom-10 left-10 flex flex-col gap-1 text-[10px] font-mono opacity-20 z-10">
-        <div className="flex items-center gap-2">
-          <span className="w-1 h-1 bg-accent" />
-          <span>LOC: HOLY_ANGEL_REGISTRY</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="w-1 h-1 bg-accent" />
-          <span suppressHydrationWarning>TS: {new Date().getFullYear()}.03.16.v3</span>
-        </div>
-      </div>
     </section>
   );
 }
