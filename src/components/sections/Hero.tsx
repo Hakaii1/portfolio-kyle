@@ -42,11 +42,11 @@ export default function Hero() {
 
       {/* 2. DYNAMIC 3D HOVERING ROBOT BACKGROUND */}
       <div className="absolute inset-0 z-0 bg-[#06060c]/40">
-        <Canvas camera={{ position: [0, 0, 3.5], fov: 75 }}>
-          <ambientLight intensity={0.5} />
+        <Canvas dpr={[1, 1.5]} gl={{ powerPreference: "high-performance", antialias: true }} camera={{ position: [0, 0, 3.5], fov: 75 }}>
+          <ambientLight intensity={0.6} />
           <directionalLight position={[5, 5, 5]} intensity={1.5} color="#00f0ff" />
-          <pointLight position={[-5, 5, -5]} intensity={1.0} color="#ff00ff" />
-          <spotLight position={[0, 5, 2]} angle={0.6} penumbra={1} intensity={2.0} color="#ffffff" />
+          <pointLight position={[-5, 5, -5]} intensity={0.8} color="#ff00ff" />
+          <spotLight position={[0, 5, 2]} angle={0.6} penumbra={1} intensity={1.8} color="#ffffff" />
           <FloatingRobot isBooted={isBooted} />
         </Canvas>
       </div>
@@ -82,36 +82,36 @@ export default function Hero() {
       </AnimatePresence>
 
       {/* 4. MAIN HERO TYPOGRAPHY & INTERACTIVE CORE */}
-      <div className="relative z-10 text-center px-4">
+      <div className="relative z-10 text-center px-4 max-w-7xl mx-auto">
         <AnimatePresence>
           {isBooted && (
             <motion.div
               variants={container}
               initial="hidden"
               animate="show"
-              className="flex flex-col gap-6 items-center"
+              className="flex flex-col gap-4 sm:gap-6 items-center"
             >
               {/* Profile Image with dual neon rotating rings */}
               <motion.div
                 variants={item}
-                className="relative group"
+                className="relative group mt-12 sm:mt-0"
               >
-                <div className="relative w-40 h-40 md:w-56 md:h-56">
+                <div className="relative w-28 h-28 sm:w-40 sm:h-40 md:w-52 md:h-52">
                   {/* Outer Pulsing Neon cyan dashes */}
                   <motion.div
                     animate={{ rotate: 360 }}
                     transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-                    className="absolute -inset-4 border-2 border-dashed border-accent/40 rounded-full shadow-[0_0_15px_rgba(0,240,255,0.1)]"
+                    className="absolute -inset-3 sm:-inset-4 border-2 border-dashed border-accent/40 rounded-full shadow-[0_0_15px_rgba(0,240,255,0.1)]"
                   />
                   {/* Inner neon magenta border */}
                   <motion.div
                     animate={{ rotate: -360 }}
                     transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
-                    className="absolute -inset-2 border border-accent-secondary/60 rounded-full border-t-transparent border-b-transparent shadow-[0_0_20px_rgba(255,0,255,0.15)]"
+                    className="absolute -inset-1.5 sm:-inset-2 border border-accent-secondary/60 rounded-full border-t-transparent border-b-transparent shadow-[0_0_20px_rgba(255,0,255,0.15)]"
                   />
 
                   {/* Core Image container */}
-                  <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-background shadow-[0_0_35px_rgba(0,240,255,0.3)] bg-[#0c0c14]">
+                  <div className="relative w-full h-full rounded-full overflow-hidden border-2 sm:border-4 border-background shadow-[0_0_35px_rgba(0,240,255,0.3)] bg-[#0c0c14]">
                     <img
                       src="/assets/1x1.jpeg"
                       alt="Kyle Gulapa"
@@ -121,8 +121,8 @@ export default function Hero() {
                   </div>
 
                   {/* Pulsing online status indicator */}
-                  <div className="absolute bottom-2 right-2 w-6 h-6 bg-[#0c0c14] rounded-full flex items-center justify-center border-2 border-accent shadow-[0_0_10px_rgba(0,240,255,0.5)] z-10">
-                    <div className="w-2.5 h-2.5 bg-accent rounded-full animate-pulse shadow-[0_0_6px_#00f0ff]" />
+                  <div className="absolute bottom-1 right-1 sm:bottom-2 sm:right-2 w-5 h-5 sm:w-6 sm:h-6 bg-[#0c0c14] rounded-full flex items-center justify-center border-2 border-accent shadow-[0_0_10px_rgba(0,240,255,0.5)] z-10">
+                    <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-accent rounded-full animate-pulse shadow-[0_0_6px_#00f0ff]" />
                   </div>
 
                   {/* HUD detail tooltip tag */}
@@ -136,9 +136,9 @@ export default function Hero() {
               </motion.div>
 
               {/* Main Typography Header */}
-              <div className="flex flex-col items-center mt-2">
-                <h1 className="text-5xl md:text-8xl lg:text-9xl font-display uppercase leading-tight tracking-tighter">
-                  <div className="flex justify-center gap-4 overflow-hidden">
+              <div className="flex flex-col items-center mt-1 sm:mt-2">
+                <h1 className="text-4xl sm:text-7xl md:text-8xl lg:text-9xl font-display uppercase leading-tight tracking-tighter">
+                  <div className="flex justify-center gap-2 sm:gap-4 overflow-hidden">
                     <motion.span
                       initial={{ y: -100, opacity: 0, filter: "blur(15px)" }}
                       animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
@@ -156,7 +156,7 @@ export default function Hero() {
                       Eurie
                     </motion.span>
                   </div>
-                  <div className="overflow-hidden mt-1 pb-2">
+                  <div className="overflow-hidden mt-1 pb-1 sm:pb-2">
                     <motion.div
                       initial={{ y: 100, opacity: 0, filter: "blur(15px)" }}
                       animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
@@ -170,10 +170,10 @@ export default function Hero() {
               </div>
 
               {/* Sub-header description */}
-              <div className="overflow-hidden -mt-2">
+              <div className="overflow-hidden -mt-1 sm:-mt-2">
                 <motion.p
                   variants={item}
-                  className="text-sm md:text-lg lg:text-xl font-mono text-white/50 uppercase tracking-[0.4em]"
+                  className="text-xs sm:text-base md:text-lg lg:text-xl font-mono text-white/50 uppercase tracking-[0.2em] sm:tracking-[0.4em]"
                 >
                   Full Stack Web Developer // Designer
                 </motion.p>

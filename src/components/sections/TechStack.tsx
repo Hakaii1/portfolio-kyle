@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useTransform, useInView } from "framer-motion";
 import { Cpu, Zap, Code2, Database, Layout, Smartphone, Trophy, Lock } from "lucide-react";
 import { useLenis } from "lenis/react";
 
@@ -168,6 +168,11 @@ export default function TechStack() {
   const [isEnteringTunnel, setIsEnteringTunnel] = useState(false);
   const lenis = useLenis();
 
+  const sectionContainerRef = useRef<HTMLElement>(null);
+  const isTechInView = useInView(sectionContainerRef, { amount: 0.1 });
+  const isTechInViewRef = useRef(isTechInView);
+  isTechInViewRef.current = isTechInView;
+
   const motionX = useMotionValue(200);
   const motionY = useMotionValue(0);
   const motionCameraX = useMotionValue(0);
@@ -259,6 +264,29 @@ export default function TechStack() {
     setTimeout(() => setIsFiring(false), 300);
   }, [facing]);
 
+  const handleControlStart = useCallback((action: "left" | "right" | "jump" | "fire", e?: React.SyntheticEvent) => {
+    if (e && e.cancelable) e.preventDefault();
+    setHasMoved(true);
+    if (action === "left") {
+      keysPressed.current.add("touch-left");
+      setFacing("left");
+    } else if (action === "right") {
+      keysPressed.current.add("touch-right");
+      setFacing("right");
+    } else if (action === "jump") {
+      keysPressed.current.add("touch-jump");
+    } else if (action === "fire") {
+      handleFire();
+    }
+  }, [handleFire]);
+
+  const handleControlEnd = useCallback((action: "left" | "right" | "jump", e?: React.SyntheticEvent) => {
+    if (e && e.cancelable) e.preventDefault();
+    if (action === "left") keysPressed.current.delete("touch-left");
+    if (action === "right") keysPressed.current.delete("touch-right");
+    if (action === "jump") keysPressed.current.delete("touch-jump");
+  }, []);
+
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     const key = e.key.toLowerCase();
     keysPressed.current.add(key);
@@ -271,7 +299,7 @@ export default function TechStack() {
     if (key === "arrowright" || key === "d") setFacing("right");
     if (key === "s" || key === "arrowdown") setIsCrouching(true);
     if (key === "f" || key === "control") handleFire();
-  }, [facing]);
+  }, [facing, handleFire]);
 
   const handleKeyUp = useCallback((e: KeyboardEvent) => {
     const key = e.key.toLowerCase();
@@ -462,7 +490,7 @@ export default function TechStack() {
   const isWalkingVal = isWalking;
 
   return (
-    <section id="tech-stack" className="relative h-screen bg-transparent overflow-hidden border-y border-white/5">
+    <section ref={sectionContainerRef} id="tech-stack" className="relative h-screen bg-transparent overflow-hidden border-y border-white/5">
       {/* City Background Layer */}
       <motion.div
         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-80"
@@ -473,19 +501,19 @@ export default function TechStack() {
       />
       <div className="absolute inset-0 bg-background/40 z-0" />
 
-      <div className="relative h-full flex flex-col pt-24 z-10 overscroll-none overflow-hidden">
-        <div className="container mx-auto px-4 flex flex-col items-center mb-12">
+      <div className="relative h-full flex flex-col pt-16 sm:pt-24 z-10 overscroll-none overflow-hidden">
+        <div className="container mx-auto px-4 flex flex-col items-center mb-6 sm:mb-12">
           {/* Tactical Holographic HUD (Integrated into Header) */}
           <motion.div 
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            className="w-full max-w-2xl mb-8 group"
+            className="w-full max-w-2xl mb-4 sm:mb-8 group px-2 sm:px-0"
           >
-            <div className="bg-background/20 backdrop-blur-2xl border-x border-white/5 px-6 py-3 rounded-2xl relative overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.3)] border-b border-white/5">
+            <div className="bg-background/20 backdrop-blur-md border-x border-white/5 px-4 sm:px-6 py-3 rounded-2xl relative overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.3)] border-b border-white/5">
               <div className="flex justify-between items-center mb-2">
                 <div className="flex items-center gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse shadow-[0_0_8px_#00f0ff]" />
-                  <span className="text-[8px] font-mono text-white/40 uppercase tracking-[0.4em]">Sector_Sync_Protocol</span>
+                  <span className="text-[8px] font-mono text-white/40 uppercase tracking-[0.3em] sm:tracking-[0.4em]">Sector_Sync_Protocol</span>
                 </div>
                 <div className="flex items-center gap-4">
                   <span className="text-[10px] text-accent font-mono uppercase font-bold tracking-widest">
@@ -535,10 +563,10 @@ export default function TechStack() {
             </div>
           </motion.div>
 
-          <motion.h2 className="text-4xl md:text-8xl font-display uppercase tracking-tighter text-glow text-center">
+          <motion.h2 className="text-3xl sm:text-6xl md:text-8xl font-display uppercase tracking-tighter text-glow text-center">
             Tech<span className="text-accent">Stacks</span>
           </motion.h2>
-          <div className="flex flex-wrap gap-4 mt-4 justify-center items-center">
+          <div className="flex flex-wrap gap-2 sm:gap-4 mt-2 sm:mt-4 justify-center items-center px-2">
             <motion.div 
               animate={{ 
                 boxShadow: [
@@ -548,28 +576,28 @@ export default function TechStack() {
                 ]
               }}
               transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-              className="px-6 py-1.5 bg-accent/15 border border-accent/40 text-accent font-mono text-[10px] uppercase tracking-[0.3em] flex items-center gap-2.5 rounded-md shadow-[0_0_15px_rgba(0,240,255,0.15)]"
+              className="px-4 sm:px-6 py-1.5 bg-accent/15 border border-accent/40 text-accent font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.2em] sm:tracking-[0.3em] flex items-center gap-2 rounded-md shadow-[0_0_15px_rgba(0,240,255,0.15)]"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-accent animate-ping" />
               <span className="font-bold">
                 {blocksHit.length > 0 ? "Data Sync Active! Keep Exploring" : "Headbutt blocks to reveal"}
               </span>
             </motion.div>
-            <div className="px-6 py-1.5 bg-accent text-background font-mono text-[10px] uppercase tracking-[0.3em] rounded-md font-bold">
+            <div className="px-4 sm:px-6 py-1.5 bg-accent text-background font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.2em] sm:tracking-[0.3em] rounded-md font-bold">
               MODULES: {blocksHit.length}/{techData.length}
             </div>
           </div>
         </div>
 
-        {/* Tech Archive / Achievement Hub */}
+        {/* Tech Archive / Achievement Hub (Visible on XL screens to avoid overlaying game on mobile) */}
         <div
-          className="absolute left-4 lg:left-6 top-32 z-50 w-48 lg:w-64"
+          className="hidden xl:block absolute left-6 top-32 z-50 w-64"
           onWheel={(e) => e.stopPropagation()}
         >
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="p-3 lg:p-4 bg-background/80 backdrop-blur-2xl border-2 border-white/5 rounded-2xl shadow-[20px_0_50px_rgba(0,0,0,0.5)] overscroll-contain"
+            className="p-4 bg-background/80 backdrop-blur-md border-2 border-white/5 rounded-2xl shadow-[20px_0_50px_rgba(0,0,0,0.5)] overscroll-contain"
           >
             <div className="flex flex-col gap-1 mb-4 border-b border-white/10 pb-3">
               <div className="flex justify-between items-center">
@@ -866,56 +894,73 @@ export default function TechStack() {
         </div>
       </div>
 
-      {/* Arcade Mobile Controls */}
-      <div className="absolute inset-x-0 bottom-24 flex justify-between px-6 pointer-events-none z-[150]">
+      {/* Arcade Mobile Controls (Supports all touch devices: Phones, iPads, Tablets) */}
+      <div className="absolute inset-x-0 bottom-6 sm:bottom-12 flex justify-between px-3 sm:px-8 pointer-events-none z-[150] touch-none select-none flex">
         {/* D-Pad */}
-        <div className="flex gap-4 pointer-events-auto items-end">
+        <div className="flex gap-2 sm:gap-4 pointer-events-auto items-end">
           <button
-            onPointerDown={() => {
-              keysPressed.current.add("touch-left");
-              setFacing("left");
-              setHasMoved(true);
+            onTouchStart={(e) => handleControlStart("left", e)}
+            onTouchEnd={(e) => handleControlEnd("left", e)}
+            onTouchCancel={(e) => handleControlEnd("left", e)}
+            onPointerDown={(e) => {
+              try { (e.target as HTMLElement).setPointerCapture?.(e.pointerId); } catch {}
+              handleControlStart("left", e);
             }}
-            onPointerUp={() => keysPressed.current.delete("touch-left")}
-            onPointerLeave={() => keysPressed.current.delete("touch-left")}
-            className="w-16 h-16 bg-background/60 backdrop-blur-md rounded-2xl border-2 border-white/20 flex items-center justify-center active:bg-accent active:border-accent group transition-all"
+            onPointerUp={(e) => {
+              try { (e.target as HTMLElement).releasePointerCapture?.(e.pointerId); } catch {}
+              handleControlEnd("left", e);
+            }}
+            onPointerCancel={(e) => handleControlEnd("left", e)}
+            className="w-12 h-12 sm:w-16 sm:h-16 bg-background/80 backdrop-blur-md rounded-2xl border-2 border-white/30 flex items-center justify-center active:bg-accent active:border-accent group transition-all touch-none select-none shadow-lg"
           >
-            <div className="w-0 h-0 border-t-[10px] border-t-transparent border-b-[10px] border-b-transparent border-r-[20px] border-r-white group-active:border-r-background" />
+            <div className="w-0 h-0 border-t-[8px] sm:border-t-[10px] border-t-transparent border-b-[8px] sm:border-b-[10px] border-b-transparent border-r-[16px] sm:border-r-[20px] border-r-white group-active:border-r-background" />
           </button>
           <button
-            onPointerDown={() => {
-              keysPressed.current.add("touch-right");
-              setFacing("right");
-              setHasMoved(true);
+            onTouchStart={(e) => handleControlStart("right", e)}
+            onTouchEnd={(e) => handleControlEnd("right", e)}
+            onTouchCancel={(e) => handleControlEnd("right", e)}
+            onPointerDown={(e) => {
+              try { (e.target as HTMLElement).setPointerCapture?.(e.pointerId); } catch {}
+              handleControlStart("right", e);
             }}
-            onPointerUp={() => keysPressed.current.delete("touch-right")}
-            onPointerLeave={() => keysPressed.current.delete("touch-right")}
-            className="w-16 h-16 bg-background/60 backdrop-blur-md rounded-2xl border-2 border-white/20 flex items-center justify-center active:bg-accent active:border-accent group transition-all"
+            onPointerUp={(e) => {
+              try { (e.target as HTMLElement).releasePointerCapture?.(e.pointerId); } catch {}
+              handleControlEnd("right", e);
+            }}
+            onPointerCancel={(e) => handleControlEnd("right", e)}
+            className="w-12 h-12 sm:w-16 sm:h-16 bg-background/80 backdrop-blur-md rounded-2xl border-2 border-white/30 flex items-center justify-center active:bg-accent active:border-accent group transition-all touch-none select-none shadow-lg"
           >
-            <div className="w-0 h-0 border-t-[10px] border-t-transparent border-b-[10px] border-b-transparent border-l-[20px] border-l-white group-active:border-l-background" />
+            <div className="w-0 h-0 border-t-[8px] sm:border-t-[10px] border-t-transparent border-b-[8px] sm:border-b-[10px] border-b-transparent border-l-[16px] sm:border-l-[20px] border-l-white group-active:border-l-background" />
           </button>
         </div>
 
-        {/* Jump Button */}
-        <div className="pointer-events-auto flex items-end gap-4">
+        {/* Jump & Fire Buttons */}
+        <div className="pointer-events-auto flex items-end gap-2 sm:gap-4">
           <button
-            onPointerDown={handleFire}
-            className="w-20 h-20 bg-orange-500/30 backdrop-blur-md rounded-full border-4 border-orange-500 flex flex-col items-center justify-center active:bg-orange-500 active:scale-95 group transition-all shadow-[0_0_30px_rgba(255,69,0,0.3)]"
+            onTouchStart={(e) => handleControlStart("fire", e)}
+            onPointerDown={(e) => handleControlStart("fire", e)}
+            className="w-14 h-14 sm:w-20 sm:h-20 bg-orange-500/40 backdrop-blur-md rounded-full border-2 sm:border-4 border-orange-500 flex flex-col items-center justify-center active:bg-orange-500 active:scale-95 group transition-all shadow-[0_0_30px_rgba(255,69,0,0.4)] touch-none select-none"
           >
-            <span className="text-[10px] font-mono text-white uppercase font-bold">Fire</span>
-            <div className="w-6 h-6 border-2 border-white/60 rounded-full mt-1 group-active:border-background bg-orange-500" />
+            <span className="text-[9px] sm:text-[10px] font-mono text-white uppercase font-bold">Fire</span>
+            <div className="w-4 h-4 sm:w-6 sm:h-6 border-2 border-white/60 rounded-full mt-0.5 sm:mt-1 group-active:border-background bg-orange-500" />
           </button>
           <button
-            onPointerDown={() => {
-              keysPressed.current.add("touch-jump");
-              setHasMoved(true);
+            onTouchStart={(e) => handleControlStart("jump", e)}
+            onTouchEnd={(e) => handleControlEnd("jump", e)}
+            onTouchCancel={(e) => handleControlEnd("jump", e)}
+            onPointerDown={(e) => {
+              try { (e.target as HTMLElement).setPointerCapture?.(e.pointerId); } catch {}
+              handleControlStart("jump", e);
             }}
-            onPointerUp={() => keysPressed.current.delete("touch-jump")}
-            onPointerLeave={() => keysPressed.current.delete("touch-jump")}
-            className="w-20 h-20 bg-accent/30 backdrop-blur-md rounded-full border-4 border-accent flex flex-col items-center justify-center active:bg-accent active:scale-95 group transition-all shadow-[0_0_30px_rgba(0,240,255,0.3)]"
+            onPointerUp={(e) => {
+              try { (e.target as HTMLElement).releasePointerCapture?.(e.pointerId); } catch {}
+              handleControlEnd("jump", e);
+            }}
+            onPointerCancel={(e) => handleControlEnd("jump", e)}
+            className="w-14 h-14 sm:w-20 sm:h-20 bg-accent/40 backdrop-blur-md rounded-full border-2 sm:border-4 border-accent flex flex-col items-center justify-center active:bg-accent active:scale-95 group transition-all shadow-[0_0_30px_rgba(0,240,255,0.4)] touch-none select-none"
           >
-            <span className="text-[10px] font-mono text-accent uppercase font-bold group-active:text-background">Jump</span>
-            <div className="w-6 h-6 border-2 border-white/60 rounded-full mt-1 group-active:border-background" />
+            <span className="text-[9px] sm:text-[10px] font-mono text-accent uppercase font-bold group-active:text-background">Jump</span>
+            <div className="w-4 h-4 sm:w-6 sm:h-6 border-2 border-white/60 rounded-full mt-0.5 sm:mt-1 group-active:border-background" />
           </button>
         </div>
       </div>

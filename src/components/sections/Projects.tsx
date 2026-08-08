@@ -720,10 +720,10 @@ const ProjectCard = ({
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.9 }}
-      className="sticky top-20 w-full mb-40"
+      className="sticky top-20 w-full mb-16 sm:mb-28 md:mb-40"
     >
       <div
-        className="relative aspect-video md:aspect-[21/9] w-full bg-muted brutalist-border overflow-hidden group cursor-pointer"
+        className="relative aspect-square sm:aspect-video md:aspect-[21/9] w-full bg-muted brutalist-border overflow-hidden group cursor-pointer"
         style={{ borderColor: project.color }}
         onClick={(e) => {
           if (project.hasCaseStudy && project.caseStudyData && onOpenCaseStudy) {
@@ -738,16 +738,16 @@ const ProjectCard = ({
               initial={{ opacity: 0, scale: 1.1 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 z-[60] bg-red-900/90 backdrop-blur-md flex flex-col items-center justify-center p-8 text-center"
+              className="absolute inset-0 z-[60] bg-red-900/90 backdrop-blur-md flex flex-col items-center justify-center p-6 sm:p-8 text-center"
             >
-              <Lock className="w-16 h-16 text-white mb-6 animate-bounce" />
-              <h4 className="text-4xl font-display uppercase tracking-widest text-white mb-2">Access Denied</h4>
-              <p className="text-white/80 font-mono text-sm uppercase tracking-tighter max-w-md">
+              <Lock className="w-12 h-12 sm:w-16 sm:h-16 text-white mb-4 sm:mb-6 animate-bounce" />
+              <h4 className="text-2xl sm:text-4xl font-display uppercase tracking-widest text-white mb-2">Access Denied</h4>
+              <p className="text-white/80 font-mono text-xs sm:text-sm uppercase tracking-tighter max-w-md">
                 This project is intellectual property of <br />
                 <span className="text-white font-bold">La Rose Noire IT Dept.</span> <br />
                 External source code access is restricted.
               </p>
-              <div className="mt-8 px-4 py-2 border border-white/40 text-[10px] font-mono text-white animate-pulse">
+              <div className="mt-4 sm:mt-8 px-4 py-2 border border-white/40 text-[10px] font-mono text-white animate-pulse">
                 ERR_PROPRIETARY_LICENSE_LOCKED
               </div>
             </motion.div>
@@ -777,51 +777,51 @@ const ProjectCard = ({
           />
         )}
 
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-90 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent opacity-95 pointer-events-none" />
 
-        <div className="absolute bottom-0 left-0 p-8 md:p-12 w-full flex flex-col md:flex-row justify-between items-end gap-6 pointer-events-none">
+        <div className="absolute bottom-0 left-0 p-4 sm:p-8 md:p-12 w-full flex flex-col md:flex-row justify-between items-start md:items-end gap-3 sm:gap-6 pointer-events-none">
           <div className="flex-1 pointer-events-auto">
-            <span className="text-accent-secondary font-mono text-sm uppercase tracking-widest mb-2 block flex items-center gap-2">
+            <span className="text-accent-secondary font-mono text-xs sm:text-sm uppercase tracking-widest mb-1 sm:mb-2 block flex items-center gap-2 flex-wrap">
               {project.type}
               {project.hasCaseStudy && (
-                <span className="px-2 py-0.5 bg-accent/20 border border-accent text-accent text-[10px]">
+                <span className="px-2 py-0.5 bg-accent/20 border border-accent text-accent text-[9px] sm:text-[10px]">
                   FULL_CASE_STUDY
                 </span>
               )}
             </span>
-            <h3 className="text-4xl md:text-6xl font-display uppercase tracking-tighter mb-4">
+            <h3 className="text-2xl sm:text-4xl md:text-6xl font-display uppercase tracking-tighter mb-2 sm:mb-4">
               {project.title}
             </h3>
-            <p className="text-muted-foreground font-sans max-w-xl text-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+            <p className="text-muted-foreground font-sans max-w-xl text-xs sm:text-base md:text-lg line-clamp-2 md:line-clamp-none opacity-90 md:opacity-0 group-hover:opacity-100 transition-opacity duration-500">
               {project.description}
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-4 relative z-10 pointer-events-auto">
+          <div className="flex flex-wrap gap-2 sm:gap-4 relative z-10 pointer-events-auto mt-2 md:mt-0">
             {project.hasCaseStudy && project.caseStudyData && (
               <button
                 onClick={(e) => handleAction(e, "casestudy")}
-                className="h-14 px-6 rounded-full border border-accent bg-accent/10 hover:bg-accent hover:text-background text-accent flex items-center gap-3 transition-all font-mono text-xs uppercase tracking-widest shadow-[0_0_20px_rgba(0,240,255,0.2)]"
+                className="h-10 sm:h-14 px-4 sm:px-6 rounded-full border border-accent bg-accent/10 hover:bg-accent hover:text-background text-accent flex items-center gap-2 sm:gap-3 transition-all font-mono text-[10px] sm:text-xs uppercase tracking-widest shadow-[0_0_20px_rgba(0,240,255,0.2)]"
               >
-                <FileText size={18} /> READ_CASE_STUDY
+                <FileText size={16} /> READ_CASE_STUDY
               </button>
             )}
 
             {project.github && (
               <button
                 onClick={(e) => handleAction(e, "github")}
-                className="h-14 px-6 rounded-full border border-white/20 flex items-center gap-3 hover:bg-white hover:text-black transition-all font-mono text-xs uppercase tracking-widest"
+                className="h-10 sm:h-14 px-4 sm:px-6 rounded-full border border-white/20 flex items-center gap-2 sm:gap-3 hover:bg-white hover:text-black transition-all font-mono text-[10px] sm:text-xs uppercase tracking-widest text-white"
               >
-                <Github size={18} /> Source_Code
+                <Github size={16} /> Source_Code
               </button>
             )}
 
             {!project.hasCaseStudy && (
               <button
                 onClick={(e) => handleAction(e, project.external ? "external" : "github")}
-                className="h-14 w-14 rounded-full border border-white/20 flex items-center justify-center hover:bg-accent hover:text-background transition-all hover:border-accent"
+                className="h-10 w-10 sm:h-14 sm:w-14 rounded-full border border-white/20 flex items-center justify-center hover:bg-accent hover:text-background transition-all hover:border-accent text-white"
               >
-                {project.locked ? <Lock size={20} /> : <ExternalLink size={20} />}
+                {project.locked ? <Lock size={16} /> : <ExternalLink size={16} />}
               </button>
             )}
           </div>
@@ -840,16 +840,16 @@ export default function Projects() {
   );
 
   return (
-    <section id="projects" className="relative px-4 py-32 bg-transparent">
+    <section id="projects" className="relative px-4 py-16 sm:py-32 bg-transparent">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-baseline mb-16 border-b border-border pb-10">
+        <div className="flex flex-col md:flex-row justify-between items-baseline mb-12 sm:mb-16 border-b border-border pb-8 sm:pb-10">
           <motion.div
             initial={{ y: 80, opacity: 0, filter: "blur(15px)" }}
             whileInView={{ y: 0, opacity: 1, filter: "blur(0px)" }}
             viewport={{ once: true }}
             transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
           >
-            <h2 className="text-7xl md:text-9xl font-display uppercase tracking-tighter">
+            <h2 className="text-4xl sm:text-7xl md:text-9xl font-display uppercase tracking-tighter">
               Selected <br /> <span className="text-accent">PROJECTS</span>
             </h2>
           </motion.div>

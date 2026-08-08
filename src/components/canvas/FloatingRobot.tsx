@@ -141,10 +141,12 @@ export default function FloatingRobot({ isBooted = false }: FloatingRobotProps) 
 
     // 2. Viewport Responsive Fixed Positioning (Edge-aligned)
     const { width, height } = state.viewport;
-    const isMobile = width < 5.0; // standard R3F width unit check
-    const targetX = isMobile ? 0 : (width / 2) - 1.25;
-    const targetY = isMobile ? 0.75 : -0.15;
-    const targetScale = isMobile ? 1.35 : 1.7;
+    const isMobile = width < 4.5; // Small mobile phones
+    const isTablet = width >= 4.5 && width < 7.5; // Tablet / iPad
+    
+    const defaultX = isMobile ? (width / 2) - 0.75 : isTablet ? (width / 2) - 1.0 : (width / 2) - 1.25;
+    const defaultY = isMobile ? 1.1 : isTablet ? 0.2 : -0.15;
+    const targetScale = isMobile ? 0.95 : isTablet ? 1.3 : 1.7;
 
     // 3. Iron Man Style Staggered Assembly Logic (5.5s duration)
     const assemblyDuration = 5.5;
@@ -197,13 +199,13 @@ export default function FloatingRobot({ isBooted = false }: FloatingRobotProps) 
         targetPositionRef.current.y = clampedY;
         hasBeenDraggedRef.current = true;
       } else if (!hasBeenDraggedRef.current) {
-        targetPositionRef.current.x = isMobile ? 0 : (width / 2) - 1.25;
-        targetPositionRef.current.y = isMobile ? 0.75 : -0.15;
+        targetPositionRef.current.x = defaultX;
+        targetPositionRef.current.y = defaultY;
       }
     } else {
       // During assembly, just use responsive default coordinates
-      targetPositionRef.current.x = isMobile ? 0 : (width / 2) - 1.25;
-      targetPositionRef.current.y = isMobile ? 0.75 : -0.15;
+      targetPositionRef.current.x = defaultX;
+      targetPositionRef.current.y = defaultY;
     }
 
     // 5. Gaze-Tracking Math (Always face the camera/user from its current position)

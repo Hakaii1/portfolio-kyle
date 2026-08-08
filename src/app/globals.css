@@ -80,10 +80,18 @@
     height: 200%;
     background: transparent url('http://assets.iceable.com/img/noise-transparent.png') repeat;
     background-repeat: repeat;
-    animation: grain 8s steps(10) infinite;
+    animation: grain 12s steps(6) infinite;
     z-index: 9999;
     pointer-events: none;
-    opacity: 0.03;
+    opacity: 0.02;
+    transform: translateZ(0);
+    will-change: transform;
+  }
+
+  @media (prefers-reduced-motion: reduce), (max-width: 768px) {
+    .bg-noise {
+      animation: none;
+    }
   }
 
   .bg-grid {
@@ -100,11 +108,13 @@
     background: linear-gradient(to right, transparent, var(--color-accent), transparent);
     opacity: 0.1;
     position: absolute;
-    animation: scanline 4s linear infinite;
+    animation: scanline 6s linear infinite;
+    pointer-events: none;
+    transform: translateZ(0);
   }
 
   .glass {
-    @apply bg-zinc-900/30 backdrop-blur-xl border border-white/5;
+    @apply bg-zinc-900/40 backdrop-blur-md border border-white/5;
   }
 
   .brutalist-border {
@@ -139,5 +149,6 @@
     scrollbar-color: var(--color-accent) transparent;
   }
 }
+
 
 

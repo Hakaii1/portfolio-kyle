@@ -220,14 +220,14 @@ export default function Footer() {
       <div className="scanline top-0" />
 
       <div className="absolute inset-0 z-0 flex items-center justify-center opacity-5 pointer-events-none select-none">
-        <h2 className="text-[30vw] font-display uppercase leading-none tracking-tighter">
+        <h2 className="text-[22vw] md:text-[30vw] font-display uppercase leading-none tracking-tighter">
           ARCHIVE
         </h2>
       </div>
 
       <motion.div
         style={{ scale, opacity }}
-        className="relative z-10 text-center flex flex-col items-center"
+        className="relative z-10 text-center flex flex-col items-center w-full max-w-5xl"
       >
         <motion.div
           initial={{ scale: 0.9, opacity: 0, filter: "blur(20px)" }}
@@ -235,37 +235,37 @@ export default function Footer() {
           viewport={{ once: true }}
           transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
         >
-          <div className="flex flex-col items-center mb-12 uppercase">
-            <h2 className="text-6xl md:text-[10vw] font-display leading-none tracking-tighter text-accent text-glow">
+          <div className="flex flex-col items-center mb-8 sm:mb-12 uppercase">
+            <h2 className="text-4xl sm:text-7xl md:text-[10vw] font-display leading-none tracking-tighter text-accent text-glow">
               CONTACTS <br className="md:hidden" />
             </h2>
 
             {/* Resume-Focused Stats */}
-            <div className="grid grid-cols-3 gap-8 mt-12 font-mono text-xs uppercase tracking-[0.3em] pb-8 border-b border-white/10 w-full max-w-xl">
-              <div className="flex flex-col gap-2">
+            <div className="grid grid-cols-3 gap-3 sm:gap-8 mt-6 sm:mt-12 font-mono text-[9px] sm:text-xs uppercase tracking-[0.15em] sm:tracking-[0.3em] pb-6 sm:pb-8 border-b border-white/10 w-full max-w-xl">
+              <div className="flex flex-col gap-1 sm:gap-2">
                 <span className="opacity-40">Experience</span>
-                <span className="text-xl text-accent text-glow">3+ YEARS</span>
+                <span className="text-base sm:text-xl text-accent text-glow">3+ YEARS</span>
               </div>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-1 sm:gap-2">
                 <span className="opacity-40">Knowledge</span>
-                <span className="text-xl text-white">10+ TECHS</span>
+                <span className="text-base sm:text-xl text-white">10+ TECHS</span>
               </div>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-1 sm:gap-2">
                 <span className="opacity-40">Status</span>
-                <span className="text-xl text-[#00ff41] brightness-125">HIRING_READY</span>
+                <span className="text-base sm:text-xl text-[#00ff41] brightness-125">HIRING_READY</span>
               </div>
             </div>
           </div>
         </motion.div>
 
-        <div className="flex flex-col gap-16 items-center justify-center">
+        <div className="flex flex-col gap-8 sm:gap-16 items-center justify-center w-full">
           <div className="flex flex-col md:flex-row gap-6">
             <motion.button
               ref={resumeButtonRef}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={handleFireResume}
-              className="group relative px-12 py-5 bg-foreground text-background border-2 border-foreground font-display text-2xl uppercase tracking-widest hover:bg-transparent hover:text-foreground transition-all shadow-[0_0_30px_rgba(255,255,255,0.1)]"
+              className="group relative px-8 sm:px-12 py-4 sm:py-5 bg-foreground text-background border-2 border-foreground font-display text-xl sm:text-2xl uppercase tracking-widest hover:bg-transparent hover:text-foreground transition-all shadow-[0_0_30px_rgba(255,255,255,0.1)]"
             >
               <span className="relative z-10">VIEW_RESUME.exe</span>
               <div className="absolute -inset-1 bg-white/20 blur opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -273,16 +273,16 @@ export default function Footer() {
           </div>
 
           {/* Contact Directory */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-24 items-start w-full max-w-4xl border-t border-white/5 pt-12">
-            <div className="flex flex-col items-center md:items-start gap-4">
-              <span className="text-[10px] font-mono text-accent/40 uppercase tracking-[0.4em]">COMMS_CHANNEL</span>
-              <div className="flex flex-col items-center md:items-start gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 md:gap-16 items-start w-full border-t border-white/5 pt-8 sm:pt-12">
+            <div className="flex flex-col items-center md:items-start gap-2 sm:gap-4">
+              <span className="text-[10px] font-mono text-accent/40 uppercase tracking-[0.3em] sm:tracking-[0.4em]">COMMS_CHANNEL</span>
+              <div className="flex flex-col items-center md:items-start gap-1 sm:gap-2">
                 <button
                   onClick={handleCopyEmail}
-                  className="text-sm font-mono text-white/80 hover:text-accent transition-colors flex items-center gap-3 group/email leading-none"
+                  className="text-xs sm:text-sm font-mono text-white/80 hover:text-accent transition-colors flex items-center gap-2 sm:gap-3 group/email leading-none"
                 >
                   kylegulapa06@gmail.com
-                  <div className="relative w-24 h-5 flex items-center">
+                  <div className="relative w-20 h-5 flex items-center">
                     <AnimatePresence mode="wait">
                       {isCopied ? (
                         <motion.span
@@ -290,7 +290,7 @@ export default function Footer() {
                           initial={{ opacity: 0, scale: 0.8 }}
                           animate={{ opacity: 1, scale: 1 }}
                           exit={{ opacity: 0, scale: 0.8 }}
-                          className="absolute left-0 text-[10px] text-accent px-2 py-0.5 border border-accent/30 bg-accent/10 whitespace-nowrap"
+                          className="absolute left-0 text-[9px] sm:text-[10px] text-accent px-1.5 py-0.5 border border-accent/30 bg-accent/10 whitespace-nowrap"
                         >
                           COPIED!
                         </motion.span>
@@ -300,7 +300,7 @@ export default function Footer() {
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 0 }}
                           whileHover={{ opacity: 0.4 }}
-                          className="absolute left-0 text-[10px] whitespace-nowrap"
+                          className="absolute left-0 text-[9px] sm:text-[10px] whitespace-nowrap"
                         >
                           [ CLICK_TO_COPY ]
                         </motion.span>
@@ -308,26 +308,26 @@ export default function Footer() {
                     </AnimatePresence>
                   </div>
                 </button>
-                <span className="text-sm font-mono opacity-40">+63 960 323 7942</span>
+                <span className="text-xs sm:text-sm font-mono opacity-40">+63 960 323 7942</span>
               </div>
             </div>
 
-            <div className="flex flex-col items-center md:items-start gap-4">
-              <span className="text-[10px] font-mono text-accent/40 uppercase tracking-[0.4em]">LOC_COORDINATES</span>
-              <div className="flex flex-col items-center md:items-start gap-2 text-sm font-mono text-white/80">
+            <div className="flex flex-col items-center md:items-start gap-2 sm:gap-4">
+              <span className="text-[10px] font-mono text-accent/40 uppercase tracking-[0.3em] sm:tracking-[0.4em]">LOC_COORDINATES</span>
+              <div className="flex flex-col items-center md:items-start gap-1 sm:gap-2 text-xs sm:text-sm font-mono text-white/80">
                 <span>Pampanga, Philippines</span>
                 <span className="opacity-40">UTC+8:00 // GMT</span>
               </div>
             </div>
 
-            <div className="flex flex-col items-center md:items-start gap-4">
-              <span className="text-[10px] font-mono text-accent/40 uppercase tracking-[0.4em]">NEURAL_SOCIALS</span>
+            <div className="flex flex-col items-center md:items-start gap-2 sm:gap-4 sm:col-span-2 md:col-span-1">
+              <span className="text-[10px] font-mono text-accent/40 uppercase tracking-[0.3em] sm:tracking-[0.4em]">NEURAL_SOCIALS</span>
               <div className="flex gap-6">
                 <motion.a
                   whileHover={{ y: -5, color: "#00f0ff" }}
                   href="https://github.com/Hakaii1"
                   target="_blank"
-                  className="text-lg font-display uppercase tracking-tighter"
+                  className="text-base sm:text-lg font-display uppercase tracking-tighter"
                 >
                   GitHub //
                 </motion.a>
@@ -335,7 +335,7 @@ export default function Footer() {
                   whileHover={{ y: -5, color: "#00f0ff" }}
                   href="https://www.linkedin.com/in/kyle-eurie-gulapa/"
                   target="_blank"
-                  className="text-lg font-display uppercase tracking-tighter"
+                  className="text-base sm:text-lg font-display uppercase tracking-tighter"
                 >
                   LinkedIn //
                 </motion.a>

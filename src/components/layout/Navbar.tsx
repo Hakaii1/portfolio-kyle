@@ -43,12 +43,16 @@ export default function Navbar() {
 
   const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
+    setIsOpen(false);
+    const targetId = href.substring(1);
     if (lenis) {
       lenis.scrollTo(href, {
         duration: 2,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Cinematic easing
       });
-      setIsOpen(false);
+    } else {
+      const el = document.getElementById(targetId);
+      if (el) el.scrollIntoView({ behavior: "smooth" });
     }
   };
 
