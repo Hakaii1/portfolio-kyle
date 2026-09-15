@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLenis } from "lenis/react";
-import { Github, ExternalLink, Lock, FileText, X, CheckCircle2, AlertTriangle, Database, Cpu, ArrowRight, Layers, FolderCheck, Workflow, ChevronLeft, ChevronRight } from "lucide-react";
+import { Github, ExternalLink, Lock, FileText, X, CheckCircle2, AlertTriangle, Database, Cpu, ArrowRight, Layers, FolderCheck, Workflow, ChevronLeft, ChevronRight, Film } from "lucide-react";
+import AiVideoAds from "./AiVideoAds";
 
 interface CaseStudyData {
   title: string;
@@ -834,6 +835,19 @@ const ProjectCard = ({
 export default function Projects() {
   const [filter, setFilter] = useState("all");
   const [activeCaseStudy, setActiveCaseStudy] = useState<CaseStudyData | null>(null);
+  const lenis = useLenis();
+
+  const scrollToVideoAds = () => {
+    if (lenis) {
+      lenis.scrollTo("#ai-video-ads", {
+        duration: 1.5,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        offset: -40,
+      });
+    } else {
+      document.getElementById("ai-video-ads")?.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   const filteredProjects = projects.filter((p) =>
     filter === "all" ? true : p.category === filter
@@ -856,24 +870,24 @@ export default function Projects() {
 
           <div className="flex flex-col gap-12 md:text-right w-full md:w-auto mt-12 md:mt-0">
             {/* Command Bar Navigation */}
-            <div className="flex flex-col gap-4">
-              <span className="text-[10px] font-mono uppercase tracking-[0.5em] opacity-40">
+            <div className="flex flex-col gap-3 md:items-end">
+              <span className="text-[10px] font-mono uppercase tracking-[0.4em] opacity-40">
                 Filter_Command_Input
               </span>
-              <div className="flex flex-wrap gap-3 md:justify-end">
+              <div className="inline-flex flex-wrap items-center gap-1.5 p-1.5 bg-muted/40 backdrop-blur-md border border-white/10 rounded-xl">
                 {[
-                  { id: "all", label: "All//Sys" },
-                  { id: "automation", label: "Automation//Flow" },
-                  { id: "personal", label: "Personal//Proj" },
-                  { id: "intern", label: "Intern//Apps" }
+                  { id: "all", label: "All Works" },
+                  { id: "automation", label: "Automation" },
+                  { id: "personal", label: "Personal" },
+                  { id: "intern", label: "Internship" }
                 ].map((f) => (
                   <button
                     key={f.id}
                     onClick={() => setFilter(f.id)}
-                    className={`relative px-6 py-3 uppercase font-mono text-xs tracking-[0.2em] transition-all duration-500 overflow-hidden group ${
+                    className={`relative px-4 sm:px-5 py-2 sm:py-2.5 font-mono text-xs uppercase tracking-wider transition-all duration-300 rounded-lg overflow-hidden ${
                       filter === f.id
-                        ? "text-background"
-                        : "text-accent border border-accent/20 hover:border-accent"
+                        ? "text-background font-semibold shadow-[0_0_20px_rgba(0,240,255,0.35)]"
+                        : "text-white/70 hover:text-white hover:bg-white/5"
                     }`}
                   >
                     {/* Active Background Slide */}
@@ -881,15 +895,22 @@ export default function Projects() {
                       <motion.div
                         layoutId="activeFilter"
                         className="absolute inset-0 bg-accent z-0"
+                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
                       />
                     )}
-
-                    {/* Hover Effect */}
-                    <div className="absolute inset-0 bg-accent/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-0" />
 
                     <span className="relative z-10">{f.label}</span>
                   </button>
                 ))}
+
+                <button
+                  onClick={scrollToVideoAds}
+                  className="relative px-4 sm:px-5 py-2 sm:py-2.5 font-mono text-xs uppercase tracking-wider transition-all duration-300 rounded-lg text-accent hover:text-background hover:bg-accent hover:shadow-[0_0_20px_rgba(0,240,255,0.35)] flex items-center gap-1.5 border border-accent/30 hover:border-accent group"
+                  title="Jump directly to AI Video Ads"
+                >
+                  <Film size={12} className="group-hover:scale-110 transition-transform" />
+                  <span>AI Video Ads</span>
+                </button>
               </div>
             </div>
 
@@ -916,6 +937,9 @@ export default function Projects() {
             ))}
           </AnimatePresence>
         </div>
+
+        {/* AI Video Ads Section (UGC & Pixar Animated) */}
+        <AiVideoAds />
       </div>
 
       {/* Case Study Modal */}

@@ -4,10 +4,12 @@ import React, { useState } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { Canvas } from "@react-three/fiber";
 import FloatingRobot from "../canvas/FloatingRobot";
-import { Compass } from "lucide-react";
+import { Compass, Play } from "lucide-react";
+import { useLenis } from "lenis/react";
 
 export default function Hero() {
   const [isBooted] = useState(true);
+  const lenis = useLenis();
 
   const container: Variants = {
     hidden: { opacity: 0 },
@@ -175,17 +177,21 @@ export default function Hero() {
                   variants={item}
                   className="text-xs sm:text-base md:text-lg lg:text-xl font-mono text-white/50 uppercase tracking-[0.2em] sm:tracking-[0.4em]"
                 >
-                  Full Stack Web Developer // Designer
+                  Full Stack Web Developer // AI Ads Video Specialist
                 </motion.p>
               </div>
 
-              {/* Call to action button */}
-              <motion.div variants={item} className="mt-6 text-center flex justify-center z-20">
+              {/* Call to action buttons */}
+              <motion.div variants={item} className="mt-6 text-center flex flex-wrap items-center justify-center gap-4 z-20">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => {
-                    document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' });
+                    if (lenis) {
+                      lenis.scrollTo("#experience", { duration: 1.5 });
+                    } else {
+                      document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' });
+                    }
                   }}
                   className="magnetic-area group px-8 py-3.5 border border-accent/40 rounded-xl bg-accent/5 backdrop-blur-md text-accent font-mono text-xs font-bold uppercase tracking-widest cursor-pointer hover:bg-accent hover:text-background hover:border-accent hover:shadow-[0_0_30px_rgba(0,240,255,0.4)] transition-all duration-300 relative overflow-hidden"
                 >
@@ -197,6 +203,31 @@ export default function Hero() {
                     className="absolute inset-0 bg-gradient-to-r from-accent via-accent-secondary to-accent z-0 opacity-20"
                   />
                 </motion.button>
+
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => {
+                    if (lenis) {
+                      lenis.scrollTo("#ai-video-ads", {
+                        duration: 1.8,
+                        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+                      });
+                    } else {
+                      document.getElementById('ai-video-ads')?.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
+                  className="magnetic-area group px-8 py-3.5 border border-accent-secondary/50 rounded-xl bg-accent-secondary/10 backdrop-blur-md text-accent-secondary font-mono text-xs font-bold uppercase tracking-widest cursor-pointer hover:bg-accent-secondary hover:text-background hover:border-accent-secondary hover:shadow-[0_0_30px_rgba(255,0,255,0.4)] transition-all duration-300 relative overflow-hidden flex items-center gap-2"
+                >
+                  <Play size={13} className="fill-current relative z-10" />
+                  <span className="relative z-10">AI Video Ads</span>
+                  <motion.div
+                    initial={{ x: "-100%" }}
+                    whileHover={{ x: "100%" }}
+                    transition={{ duration: 0.5 }}
+                    className="absolute inset-0 bg-gradient-to-r from-accent-secondary via-accent to-accent-secondary z-0 opacity-20"
+                  />
+                </motion.button>
               </motion.div>
             </motion.div>
           )}
@@ -206,7 +237,7 @@ export default function Hero() {
       {/* 5. SCROLL PROCESS DETECTOR */}
       <AnimatePresence>
         {isBooted && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.0, delay: 0.9 }}
