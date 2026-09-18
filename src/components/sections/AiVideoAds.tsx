@@ -142,6 +142,21 @@ export const videoAds: VideoAd[] = [
     color: "#a855f7",
     accentBadge: "bg-purple-500/10 text-purple-400 border-purple-400/40",
     creativePipeline: "Viscous fluid physics, glass refractive realism, and high-CTR marketing angles."
+  },
+  {
+    id: "ugc-keyla",
+    title: "Keyla Perfume Body Butter",
+    category: "UGC",
+    categoryLabel: "UGC",
+    videoUrl: "/assets/Videos/UGC/Keyla%20Ad.mp4",
+    description:
+      "Conversational podcast-style UGC ad showcasing Keyla luxury perfume body butter — highlighting 12-hour scent longevity, Baccarat Rouge dupe angle, and high-retention direct-response framing.",
+    brand: "Keyla Fragrances",
+    aspect: "9:16 Vertical HD",
+    tags: ["Podcast UGC", "Perfume Body Butter", "Conversational Hook", "D2C Viral"],
+    color: "#f43f5e",
+    accentBadge: "bg-rose-500/10 text-rose-400 border-rose-400/40",
+    creativePipeline: "Podcast conversational hook framing, organic dialogue pacing, and high-converting luxury fragrance dupe positioning."
   }
 ];
 

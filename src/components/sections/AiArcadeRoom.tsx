@@ -97,6 +97,18 @@ const aiSkills: AiSkillModule[] = [
     workflow: "Voice actor cadence cloning, emotional inflection tuning & audio ducking.",
     linkedAdId: "ugc-tights",
     accentColor: "#10b981"
+  },
+  {
+    id: "ugc-podcast",
+    title: "Podcast & Conversational Direct-Response",
+    category: "UGC Viral",
+    iconName: "clapper",
+    tools: ["Conversational Scripting", "Organic Dialogue Pacing", "Direct-Response Hooks"],
+    summary:
+      "Engaging podcast interview format framing authentic viral recommendations, Baccarat Rouge fragrance comparisons, and compelling price-anchored CTA.",
+    workflow: "Problem-solution conversational hook, dual-speaker dynamic pacing & retention loops.",
+    linkedAdId: "ugc-keyla",
+    accentColor: "#f43f5e"
   }
 ];
 
@@ -439,7 +451,7 @@ export default function AiArcadeRoom({
                 <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest block text-center">
                   Quick Select Commercial Pod:
                 </span>
-                <div className="grid grid-cols-7 gap-1.5 w-full">
+                <div className="grid grid-cols-4 sm:grid-cols-8 gap-1.5 w-full">
                   {videoAds.map((ad, idx) => (
                     <button
                       key={ad.id}

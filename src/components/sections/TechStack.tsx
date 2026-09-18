@@ -276,7 +276,8 @@ const aiTechData: TechModule[] = [
     desc: "Advanced cinematic video generation, realistic human motion, and fine-tuned camera physics.",
     details: "Cutting-edge text-to-video and image-to-video foundation models engineered for realistic motion dynamics, complex human character performance, and cinematic camera movement for next-gen commercial video ads.",
     color: "#f43f5e",
-    x: 1700
+    x: 1700,
+    videoUrl: "/assets/Videos/UGC/Keyla Ad.mp4"
   },
   {
     name: "Seedance",
