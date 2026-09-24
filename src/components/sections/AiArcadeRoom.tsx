@@ -39,6 +39,30 @@ interface AiSkillModule {
 
 const aiSkills: AiSkillModule[] = [
   {
+    id: "ugc-problem-solution",
+    title: "Relatable Car Vlog & Telehealth Direct Response",
+    category: "UGC Viral",
+    iconName: "clapper",
+    tools: ["Direct-Response Copywriting", "CapCut Pro", "Mobile UI Pacing"],
+    summary:
+      "High-retention relatable car-vlog hook addressing medical expenses, followed by mobile UI screencast demonstration and QR code conversion CTA.",
+    workflow: "Pattern-interrupt hook, emotional price-anchoring, mobile app UI overlay & QR retention loop.",
+    linkedAdId: "ugc-trimrx",
+    accentColor: "#06b6d4"
+  },
+  {
+    id: "pixar-narrative",
+    title: "Character Storytelling & Shade Adaptation",
+    category: "Pixar 3D",
+    iconName: "sparkles",
+    tools: ["Midjourney V6", "Subsurface Scattering", "Macro Fluid Simulation"],
+    summary:
+      "Full-pipeline stylized character animation showing multi-character dialogues in retail & domestic settings, leading to dynamic cosmetics macro droplet simulation.",
+    workflow: "Stylized character performance, facial emotion consistency & color-adaptive skin blend.",
+    linkedAdId: "pixar-smooche",
+    accentColor: "#ec4899"
+  },
+  {
     id: "pixar-3d",
     title: "Stylized 3D Character Cinema",
     category: "Pixar 3D",
@@ -120,7 +144,7 @@ export default function AiArcadeRoom({
   onClose: () => void;
 }) {
   const lenis = useLenis();
-  const [selectedAdId, setSelectedAdId] = useState<string>("pixar-bedfoam");
+  const [selectedAdId, setSelectedAdId] = useState<string>(videoAds[0]?.id || "ugc-trimrx");
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
@@ -343,7 +367,7 @@ export default function AiArcadeRoom({
               <div className="pt-4 border-t border-white/10 flex items-center justify-between gap-4">
                 <div className="flex items-center gap-2 text-xs font-mono text-white/60">
                   <Film size={14} className="text-accent" />
-                  <span>7 Full HD Video Ads Rendered</span>
+                  <span>{videoAds.length} Full HD Video Ads Rendered</span>
                 </div>
 
                 <a
@@ -363,7 +387,13 @@ export default function AiArcadeRoom({
             <div className="lg:col-span-6 xl:col-span-5 p-4 sm:p-6 lg:p-8 bg-zinc-950/80 flex flex-col justify-between items-center space-y-6 overflow-y-auto">
               <div className="w-full flex flex-col items-center space-y-4">
                 {/* Arcade Monitor Bezel */}
-                <div className="relative w-full max-w-[310px] sm:max-w-[340px] aspect-[9/16] bg-black rounded-2xl border-4 border-accent/40 shadow-[0_0_40px_rgba(0,240,255,0.3)] overflow-hidden group">
+                <div
+                  className={`relative w-full ${
+                    activeAd.aspect?.includes("16:9")
+                      ? "max-w-[420px] aspect-[16/9]"
+                      : "max-w-[310px] sm:max-w-[340px] aspect-[9/16]"
+                  } bg-black rounded-2xl border-4 border-accent/40 shadow-[0_0_40px_rgba(0,240,255,0.3)] overflow-hidden group transition-all duration-300`}
+                >
                   <video
                     ref={videoRef}
                     key={activeAd.videoUrl}
@@ -374,7 +404,9 @@ export default function AiArcadeRoom({
                     playsInline
                     onTimeUpdate={handleTimeUpdate}
                     onClick={togglePlay}
-                    className="w-full h-full object-cover cursor-pointer"
+                    className={`w-full h-full ${
+                      activeAd.aspect?.includes("16:9") ? "object-contain" : "object-cover"
+                    } cursor-pointer`}
                   />
 
                   {/* Scanline CRT overlay */}
@@ -398,7 +430,7 @@ export default function AiArcadeRoom({
                       {activeAd.categoryLabel}
                     </span>
                     <span className="px-2 py-0.5 rounded-md bg-black/70 backdrop-blur-md font-mono text-[9px] text-white/80 uppercase">
-                      9:16 HD
+                      {activeAd.aspect?.includes("16:9") ? "16:9 HD" : "9:16 HD"}
                     </span>
                   </div>
 
@@ -451,7 +483,7 @@ export default function AiArcadeRoom({
                 <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest block text-center">
                   Quick Select Commercial Pod:
                 </span>
-                <div className="grid grid-cols-4 sm:grid-cols-8 gap-1.5 w-full">
+                <div className="grid grid-cols-5 sm:grid-cols-9 gap-1.5 w-full">
                   {videoAds.map((ad, idx) => (
                     <button
                       key={ad.id}
@@ -470,7 +502,7 @@ export default function AiArcadeRoom({
                         className="w-full h-full object-cover"
                       />
                       <div className="absolute inset-0 bg-black/30 flex items-center justify-center font-mono text-[9px] text-white font-bold">
-                        0{idx + 1}
+                        {(idx + 1).toString().padStart(2, "0")}
                       </div>
                     </button>
                   ))}

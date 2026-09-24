@@ -22,6 +22,7 @@ import { useLenis } from "lenis/react";
 
 export interface VideoAd {
   id: string;
+  order?: number; // Optional: Higher number = newer upload (or simply add to top of videoAds list)
   title: string;
   category: "UGC" | "Pixar";
   categoryLabel: "UGC" | "Pixar Animated";
@@ -36,100 +37,58 @@ export interface VideoAd {
 }
 
 export const videoAds: VideoAd[] = [
-  // Pixar Animated Series
+  // ── ⭐️ ADD NEW VIDEOS HERE (Top of list will always appear first in the portfolio) ⭐️ ──
   {
-    id: "pixar-bedfoam",
-    title: "CloudRest Bed Foam Ad",
-    category: "Pixar",
-    categoryLabel: "Pixar Animated",
-    videoUrl: "/assets/Videos/Pixar/Bed%20foam%20Ad%20(Music).mp4",
+    id: "ugc-trimrx",
+    order: 10,
+    title: "TrimRx Direct-Response Health Ad",
+    category: "UGC",
+    categoryLabel: "UGC",
+    videoUrl: "/assets/Videos/UGC/TrimRx%20Ad.mp4",
     description:
-      "3D stylized character animation demonstrating adaptive memory foam contouring and weightless sleep dynamics with whimsical musical pacing.",
-    brand: "CloudRest Sleep Systems",
-    aspect: "9:16 Vertical HD",
-    tags: ["Pixar 3D Aesthetic", "Character Cinema", "Commercial Storytelling", "AI Motion"],
-    color: "#00f0ff",
+      "High-converting direct-response UGC commercial featuring a relatable car-vlog hook addressing medical expenses, followed by mobile UI screencast demonstration and QR code conversion CTA to cut monthly health bills by 90%.",
+    brand: "TrimRx Telehealth",
+    aspect: "16:9 Landscape HD",
+    tags: ["UGC Direct Response", "Health & Telehealth", "High-Retention Hook", "ROAS Creative"],
+    color: "#06b6d4",
     accentBadge: "bg-cyan-500/10 text-cyan-400 border-cyan-400/40",
-    creativePipeline: "Stylized 3D character consistency, procedural lighting & whimsical scene pacing."
+    creativePipeline: "Hook-first car vlog framing, dynamic kinetic captions, problem-solution healthcare angle, and mobile UI overlay pacing."
   },
   {
-    id: "pixar-nivea",
-    title: "Nivea Deep Moisture Ad",
+    id: "pixar-smooche",
+    order: 9,
+    title: "Smooche Color Match Foundation",
     category: "Pixar",
     categoryLabel: "Pixar Animated",
-    videoUrl: "/assets/Videos/Pixar/Nivea%20Ad.mp4",
+    videoUrl: "/assets/Videos/Pixar/Smooche%20Ad.mp4",
     description:
-      "Animated brand commercial illustrating dermal hydration barriers, macro cellular moisturization, and playful character skincare routines.",
-    brand: "Nivea Skincare",
+      "3D stylized character narrative ad about discovering the perfect beauty match — featuring relatable domestic & retail character storytelling and macro fluid droplet blending physics for Smooche color-changing foundation.",
+    brand: "Smooche Cosmetics",
     aspect: "9:16 Vertical HD",
-    tags: ["Pixar Animated", "Skincare Commercial", "Cellular VFX", "Brand Aesthetic"],
-    color: "#3b82f6",
-    accentBadge: "bg-blue-500/10 text-blue-400 border-blue-400/40",
-    creativePipeline: "Micro-fluid particle dynamics, soft skin subsurface scattering, and brand fidelity."
-  },
-  // UGC Series
-  {
-    id: "ugc-sneaker",
-    title: "HyperStride Sneaker Ad",
-    category: "UGC",
-    categoryLabel: "UGC",
-    videoUrl: "/assets/Videos/UGC/Sneaker-Ad.mp4",
-    description:
-      "High-energy streetwear UGC video ad emphasizing athletic flexibility, sole traction, and modern urban lifestyle styling.",
-    brand: "HyperStride Footwear",
-    aspect: "9:16 Vertical HD",
-    tags: ["UGC Streetwear", "Social E-Commerce", "Kinetic Hook", "Viral Format"],
-    color: "#ff007f",
-    accentBadge: "bg-pink-500/10 text-pink-400 border-pink-400/40",
-    creativePipeline: "Photorealistic shoe fabrication, camera track velocity, and TikTok retention hooks."
-  },
-  {
-    id: "ugc-headphone",
-    title: "Sony Xm5 ANC Headphone Ad",
-    category: "UGC",
-    categoryLabel: "UGC",
-    videoUrl: "/assets/Videos/UGC/Headphone%20Ad.mp4",
-    description:
-      "Dynamic consumer tech UGC creative demonstrating active noise cancellation, deep soundstage isolation, and daily commuting versatility.",
-    brand: "Sony XM5 Audio",
-    aspect: "9:16 Vertical HD",
-    tags: ["UGC Tech", "Sound Engineering", "Product Demo", "Direct Response"],
-    color: "#f59e0b",
-    accentBadge: "bg-amber-500/10 text-amber-400 border-amber-400/40",
-    creativePipeline: "Acoustic visualization, photoreal metallic finishes, and creator-style pacing."
-  },
-  {
-    id: "ugc-tights",
-    title: "Thermal Fleece Tights Ad",
-    category: "UGC",
-    categoryLabel: "UGC",
-    videoUrl: "/assets/Videos/UGC/Fleece%20Lined%20Tights%20Ad.mp4",
-    description:
-      "Direct-response apparel UGC showing cold-weather comfort, stretch resilience, and sleek silhouette transitions for lifestyle social campaigns.",
-    brand: "CozyFit Apparel",
-    aspect: "9:16 Vertical HD",
-    tags: ["UGC Fashion", "Apparel Conversion", "Macro Fabric", "Lifestyle Hook"],
+    tags: ["Pixar 3D Aesthetic", "Character Storytelling", "Color Changing Foundation", "Fluid VFX"],
     color: "#ec4899",
     accentBadge: "bg-pink-500/10 text-pink-400 border-pink-400/40",
-    creativePipeline: "Fabric stretch physics, organic lighting, and rapid social media hook structure."
+    creativePipeline: "Stylized character facial performance, cinematic narrative lighting, and macro emulsion droplet blend simulation."
   },
   {
-    id: "ugc-moisturizer",
-    title: "HydraGlow Moisture Crème",
+    id: "ugc-keyla",
+    order: 8,
+    title: "Keyla Perfume Body Butter",
     category: "UGC",
     categoryLabel: "UGC",
-    videoUrl: "/assets/Videos/UGC/Moisturizer%20Ad.mp4",
+    videoUrl: "/assets/Videos/UGC/Keyla%20Ad.mp4",
     description:
-      "D2C beauty UGC highlighting velvety texture spread, non-greasy absorption, and organic morning routine skin illumination.",
-    brand: "DermaGlow Skincare",
+      "Conversational podcast-style UGC ad showcasing Keyla luxury perfume body butter — highlighting 12-hour scent longevity, Baccarat Rouge dupe angle, and high-retention direct-response framing.",
+    brand: "Keyla Fragrances",
     aspect: "9:16 Vertical HD",
-    tags: ["UGC Beauty", "Skincare Routine", "Macro Texture", "Ad Creative"],
-    color: "#10b981",
-    accentBadge: "bg-emerald-500/10 text-emerald-400 border-emerald-400/40",
-    creativePipeline: "Emulsion texture simulation, dewy light specular highlights, and UGC authenticity."
+    tags: ["Podcast UGC", "Perfume Body Butter", "Conversational Hook", "D2C Viral"],
+    color: "#f43f5e",
+    accentBadge: "bg-rose-500/10 text-rose-400 border-rose-400/40",
+    creativePipeline: "Podcast conversational hook framing, organic dialogue pacing, and high-converting luxury fragrance dupe positioning."
   },
   {
     id: "ugc-serum",
+    order: 7,
     title: "Cellular Renewal Serum",
     category: "UGC",
     categoryLabel: "UGC",
@@ -144,19 +103,100 @@ export const videoAds: VideoAd[] = [
     creativePipeline: "Viscous fluid physics, glass refractive realism, and high-CTR marketing angles."
   },
   {
-    id: "ugc-keyla",
-    title: "Keyla Perfume Body Butter",
+    id: "ugc-moisturizer",
+    order: 6,
+    title: "HydraGlow Moisture Crème",
     category: "UGC",
     categoryLabel: "UGC",
-    videoUrl: "/assets/Videos/UGC/Keyla%20Ad.mp4",
+    videoUrl: "/assets/Videos/UGC/Moisturizer%20Ad.mp4",
     description:
-      "Conversational podcast-style UGC ad showcasing Keyla luxury perfume body butter — highlighting 12-hour scent longevity, Baccarat Rouge dupe angle, and high-retention direct-response framing.",
-    brand: "Keyla Fragrances",
+      "D2C beauty UGC highlighting velvety texture spread, non-greasy absorption, and organic morning routine skin illumination.",
+    brand: "DermaGlow Skincare",
     aspect: "9:16 Vertical HD",
-    tags: ["Podcast UGC", "Perfume Body Butter", "Conversational Hook", "D2C Viral"],
-    color: "#f43f5e",
-    accentBadge: "bg-rose-500/10 text-rose-400 border-rose-400/40",
-    creativePipeline: "Podcast conversational hook framing, organic dialogue pacing, and high-converting luxury fragrance dupe positioning."
+    tags: ["UGC Beauty", "Skincare Routine", "Macro Texture", "Ad Creative"],
+    color: "#10b981",
+    accentBadge: "bg-emerald-500/10 text-emerald-400 border-emerald-400/40",
+    creativePipeline: "Emulsion texture simulation, dewy light specular highlights, and UGC authenticity."
+  },
+  {
+    id: "ugc-tights",
+    order: 5,
+    title: "Thermal Fleece Tights Ad",
+    category: "UGC",
+    categoryLabel: "UGC",
+    videoUrl: "/assets/Videos/UGC/Fleece%20Lined%20Tights%20Ad.mp4",
+    description:
+      "Direct-response apparel UGC showing cold-weather comfort, stretch resilience, and sleek silhouette transitions for lifestyle social campaigns.",
+    brand: "CozyFit Apparel",
+    aspect: "9:16 Vertical HD",
+    tags: ["UGC Fashion", "Apparel Conversion", "Macro Fabric", "Lifestyle Hook"],
+    color: "#ec4899",
+    accentBadge: "bg-pink-500/10 text-pink-400 border-pink-400/40",
+    creativePipeline: "Fabric stretch physics, organic lighting, and rapid social media hook structure."
+  },
+  {
+    id: "ugc-headphone",
+    order: 4,
+    title: "Sony Xm5 ANC Headphone Ad",
+    category: "UGC",
+    categoryLabel: "UGC",
+    videoUrl: "/assets/Videos/UGC/Headphone%20Ad.mp4",
+    description:
+      "Dynamic consumer tech UGC creative demonstrating active noise cancellation, deep soundstage isolation, and daily commuting versatility.",
+    brand: "Sony XM5 Audio",
+    aspect: "9:16 Vertical HD",
+    tags: ["UGC Tech", "Sound Engineering", "Product Demo", "Direct Response"],
+    color: "#f59e0b",
+    accentBadge: "bg-amber-500/10 text-amber-400 border-amber-400/40",
+    creativePipeline: "Acoustic visualization, photoreal metallic finishes, and creator-style pacing."
+  },
+  {
+    id: "ugc-sneaker",
+    order: 3,
+    title: "HyperStride Sneaker Ad",
+    category: "UGC",
+    categoryLabel: "UGC",
+    videoUrl: "/assets/Videos/UGC/Sneaker-Ad.mp4",
+    description:
+      "High-energy streetwear UGC video ad emphasizing athletic flexibility, sole traction, and modern urban lifestyle styling.",
+    brand: "HyperStride Footwear",
+    aspect: "9:16 Vertical HD",
+    tags: ["UGC Streetwear", "Social E-Commerce", "Kinetic Hook", "Viral Format"],
+    color: "#ff007f",
+    accentBadge: "bg-pink-500/10 text-pink-400 border-pink-400/40",
+    creativePipeline: "Photorealistic shoe fabrication, camera track velocity, and TikTok retention hooks."
+  },
+  {
+    id: "pixar-nivea",
+    order: 2,
+    title: "Nivea Deep Moisture Ad",
+    category: "Pixar",
+    categoryLabel: "Pixar Animated",
+    videoUrl: "/assets/Videos/Pixar/Nivea%20Ad.mp4",
+    description:
+      "Animated brand commercial illustrating dermal hydration barriers, macro cellular moisturization, and playful character skincare routines.",
+    brand: "Nivea Skincare",
+    aspect: "9:16 Vertical HD",
+    tags: ["Pixar Animated", "Skincare Commercial", "Cellular VFX", "Brand Aesthetic"],
+    color: "#3b82f6",
+    accentBadge: "bg-blue-500/10 text-blue-400 border-blue-400/40",
+    creativePipeline: "Micro-fluid particle dynamics, soft skin subsurface scattering, and brand fidelity."
+  },
+  {
+    id: "pixar-bedfoam",
+    order: 1,
+    title: "CloudRest Bed Foam Ad",
+    category: "Pixar",
+    categoryLabel: "Pixar Animated",
+    videoUrl: "/assets/Videos/Pixar/Bed%20foam%20Ad%20(Music).mp4",
+    description:
+      "3D stylized character animation demonstrating adaptive memory foam contouring and weightless sleep dynamics with whimsical musical pacing.",
+    brand: "CloudRest Sleep Systems",
+    aspect: "9:16 Vertical HD",
+    tags: ["Pixar 3D Aesthetic", "Character Cinema", "Commercial Storytelling", "AI Motion"],
+    color: "#00f0ff",
+    accentBadge: "bg-cyan-500/10 text-cyan-400 border-cyan-400/40",
+    creativePipeline: "Stylized 3D character consistency, procedural lighting & whimsical scene pacing."
   }
 ];
 
@@ -230,8 +270,19 @@ function VideoCard({
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => onOpenModal(ad)}
     >
-      {/* 9:16 Video Player Container */}
-      <div className="relative aspect-[9/16] w-full bg-zinc-950 overflow-hidden">
+      {/* Video Player Container */}
+      <div className="relative aspect-[9/16] w-full bg-zinc-950 overflow-hidden flex items-center justify-center">
+        {/* Ambient blurred backdrop for landscape videos to fill vertical card seamlessly */}
+        {ad.aspect.includes("16:9") && (
+          <video
+            src={ad.videoUrl}
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover filter blur-xl opacity-40 scale-110 pointer-events-none"
+          />
+        )}
+
         <video
           ref={videoRef}
           src={ad.videoUrl}
@@ -240,7 +291,11 @@ function VideoCard({
           playsInline
           preload="metadata"
           onTimeUpdate={handleTimeUpdate}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          className={`w-full ${
+            ad.aspect.includes("16:9")
+              ? "relative z-10 object-contain max-h-full"
+              : "h-full object-cover"
+          } transition-transform duration-700 group-hover:scale-105`}
         />
 
         {/* Ambient Top & Bottom Vignette Gradient */}
@@ -262,7 +317,7 @@ function VideoCard({
 
           {/* Reel Format Pill */}
           <div className="px-2 py-0.5 bg-black/60 backdrop-blur-md border border-white/20 text-[9px] font-mono text-white/80 uppercase tracking-wider">
-            9:16 HD
+            {ad.aspect.includes("16:9") ? "16:9 HD" : "9:16 HD"}
           </div>
         </div>
 
@@ -473,7 +528,7 @@ function VideoLightboxModal({
           <div className="flex items-center gap-3">
             <div className="w-2.5 h-2.5 rounded-full bg-accent animate-ping" />
             <span className="font-mono text-xs uppercase tracking-widest text-accent font-semibold">
-              REEL_PLAYER // [0{currentIndex + 1}/0{allAds.length}] :: {ad.categoryLabel.toUpperCase()}
+              REEL_PLAYER // [{(currentIndex + 1).toString().padStart(2, "0")}/{allAds.length.toString().padStart(2, "0")}] :: {ad.categoryLabel.toUpperCase()}
             </span>
           </div>
 
@@ -507,9 +562,15 @@ function VideoLightboxModal({
 
         {/* Modal Main Body */}
         <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 overflow-y-auto lg:overflow-hidden font-sans">
-          {/* Left / Center 9:16 Video Stage */}
+          {/* Left / Center Video Stage */}
           <div className="lg:col-span-6 xl:col-span-7 bg-zinc-950 flex flex-col items-center justify-center relative p-4 lg:p-6 border-b lg:border-b-0 lg:border-r border-white/10">
-            <div className="relative w-full max-w-[340px] md:max-w-[380px] aspect-[9/16] bg-black border border-white/20 shadow-2xl overflow-hidden group">
+            <div
+              className={`relative w-full ${
+                ad.aspect.includes("16:9")
+                  ? "max-w-[560px] md:max-w-[620px] aspect-[16/9]"
+                  : "max-w-[340px] md:max-w-[380px] aspect-[9/16]"
+              } bg-black border border-white/20 shadow-2xl overflow-hidden group transition-all duration-300`}
+            >
               <video
                 ref={videoRef}
                 src={ad.videoUrl}
@@ -519,7 +580,9 @@ function VideoLightboxModal({
                 playsInline
                 onTimeUpdate={handleTimeUpdate}
                 onClick={togglePlay}
-                className="w-full h-full object-cover cursor-pointer"
+                className={`w-full h-full ${
+                  ad.aspect.includes("16:9") ? "object-contain" : "object-cover"
+                } cursor-pointer`}
               />
 
               {/* Center Play/Pause button on click */}
@@ -651,7 +714,7 @@ function VideoLightboxModal({
               <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest block">
                 Quick Browse All Reels:
               </span>
-              <div className="grid grid-cols-7 gap-2">
+              <div className="grid grid-cols-5 sm:grid-cols-9 gap-2">
                 {allAds.map((item, idx) => (
                   <button
                     key={item.id}
@@ -669,7 +732,7 @@ function VideoLightboxModal({
                       className="w-full h-full object-cover"
                     />
                     <div className="absolute inset-0 bg-black/30 flex items-center justify-center font-mono text-[9px] text-white font-bold">
-                      0{idx + 1}
+                      {(idx + 1).toString().padStart(2, "0")}
                     </div>
                   </button>
                 ))}
@@ -687,7 +750,14 @@ export default function AiVideoAds() {
   const [activeCategory, setActiveCategory] = useState<"all" | "UGC" | "Pixar">("all");
   const [activeModalAd, setActiveModalAd] = useState<VideoAd | null>(null);
 
-  const filteredAds = videoAds.filter((ad) => {
+  // Indexing sort: highest order or top-of-list declaration will always appear at the very top
+  const sortedAds = [...videoAds].sort((a, b) => {
+    const orderA = a.order ?? (1000 - videoAds.indexOf(a));
+    const orderB = b.order ?? (1000 - videoAds.indexOf(b));
+    return orderB - orderA;
+  });
+
+  const filteredAds = sortedAds.filter((ad) => {
     if (activeCategory === "all") return true;
     return ad.category === activeCategory;
   });
@@ -746,7 +816,7 @@ export default function AiVideoAds() {
                       : "bg-white/10 text-white/60"
                   }`}
                 >
-                  0{cat.count}
+                  {cat.count.toString().padStart(2, "0")}
                 </span>
               </button>
             ))}
