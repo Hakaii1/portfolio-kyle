@@ -39,6 +39,22 @@ export interface VideoAd {
 export const videoAds: VideoAd[] = [
   // ── ⭐️ ADD NEW VIDEOS HERE (Top of list will always appear first in the portfolio) ⭐️ ──
   {
+    id: "ugc-trimrx-v2",
+    order: 11,
+    title: "TrimRx Direct-Response Health Ad — Variant 2",
+    category: "UGC",
+    categoryLabel: "UGC",
+    videoUrl: "/assets/Videos/UGC/TrimRX2%20ad.mp4",
+    description:
+      "A second direct-response UGC creative for TrimRx Telehealth, expanding the campaign with an alternate high-retention hook and conversion-focused pacing for paid social.",
+    brand: "TrimRx Telehealth",
+    aspect: "16:9 Landscape HD",
+    tags: ["UGC Direct Response", "Health & Telehealth", "Creative Variant", "ROAS Creative"],
+    color: "#06b6d4",
+    accentBadge: "bg-cyan-500/10 text-cyan-400 border-cyan-400/40",
+    creativePipeline: "Alternate hook development, kinetic caption timing, problem-solution healthcare storytelling, and conversion-focused campaign iteration."
+  },
+  {
     id: "ugc-trimrx",
     order: 10,
     title: "TrimRx Direct-Response Health Ad",
